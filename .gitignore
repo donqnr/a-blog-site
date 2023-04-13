@@ -1,0 +1,7 @@
+.git
+
+server/config.env
+server/node_modules/
+
+client/config.env
+client/node_modules/
