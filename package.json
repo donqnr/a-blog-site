@@ -1,0 +1,16 @@
+{
+    "name": "asdf-blog-site",
+    "version": "1.0.0",
+    "description": "b",
+    "main": "./server/server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "cd ./server && node server.js"
+    },
+    "engines": {
+      "node": "18.15.11"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
