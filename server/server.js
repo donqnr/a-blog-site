@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: process.env.CORS_ORIGIN,
   credentials: true,
 }));
 app.use(express.json());
@@ -46,5 +46,5 @@ app.use("/", blogposts);
 
 app.get("/", (req, res) => res.send("e"));
 app.listen(port, () => console.log(
-  `Example app listening on port ${port}!`
+  `Listening on port ${port}!`
 ));
