@@ -9,6 +9,7 @@ export default function Signup() {
     const [signUpUser, setSignUpUser] = useState("");
     const [signUpPassword, setSignUpPassword] = useState("");
     const [signUpEmail, setSignUpEmail] = useState("");
+    const { REACT_APP_SERVER_URL } = process.env;
     const send = () => {
         Axios({
             method: "POST",
@@ -18,7 +19,7 @@ export default function Signup() {
                 email: signUpEmail
             },
             withCredentials: true,
-            url: "http://localhost:5000/api/auth/signup"
+            url: `${REACT_APP_SERVER_URL}/api/auth/signup`
         });
     };
     return (

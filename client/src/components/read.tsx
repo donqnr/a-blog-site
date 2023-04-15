@@ -8,10 +8,11 @@ import "bootstrap/dist/css/bootstrap.css";
 
 export default function Read() {
 
+    const { REACT_APP_SERVER_URL } = process.env;
     const params = useParams();
     const loginctx = useContext(loginContext);
     const [postData, setPostData] = useState<any>();
-    const blogpost = Axios.get("http://localhost:5000/blogpost", {
+    const blogpost = Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
         params: {
             id: params.id
         }

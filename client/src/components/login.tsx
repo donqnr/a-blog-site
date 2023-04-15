@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+    const { REACT_APP_SERVER_URL } = process.env;
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const send = () => {
@@ -16,7 +17,7 @@ export default function Login() {
                 password: loginPassword
             },
             withCredentials: true,
-            url: "http://localhost:5000/api/auth/login",
+            url: `${REACT_APP_SERVER_URL}/api/auth/login`,
         }).then((res) => {
             if (res.status == 200) {
                 window.location.href = "/"

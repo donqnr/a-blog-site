@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { NavLink } from "react-router-dom";
 
 export default function NewBlogPost() {
+    const { REACT_APP_SERVER_URL } = process.env;
     const loginctx = useContext(loginContext);
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
@@ -21,7 +22,7 @@ export default function NewBlogPost() {
                     text: text,
                 },
                 withCredentials: true,
-                url: "http://localhost:5000/newblogpost"
+                url: `${REACT_APP_SERVER_URL}/newblogpost`
             }).then((res) => {
                 console.log(res);
                 if (res.status == 200) {

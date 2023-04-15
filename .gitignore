@@ -1,7 +1,8 @@
 .git
+config.env
 
 server/config.env
 server/node_modules/
 
-client/config.env
+client/.env
 client/node_modules/

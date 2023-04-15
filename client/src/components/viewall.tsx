@@ -9,11 +9,11 @@ import "bootstrap/dist/css/bootstrap.css";
 
 export default function ViewAll() {
 
-
+    const { REACT_APP_SERVER_URL } = process.env;
     const params = useParams();
     const loginctx = useContext(loginContext);
     const [postData, setPostData] = useState<any[]>();
-    Axios.get("http://localhost:5000/allblogposts", {
+    Axios.get(`${REACT_APP_SERVER_URL}/allblogposts`, {
         })
         .then((res) => {
             setPostData(res.data);

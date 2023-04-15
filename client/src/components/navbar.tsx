@@ -8,10 +8,11 @@ import { NavLink, Link } from "react-router-dom";
 
 
 export default function Navbar() {
+    const { REACT_APP_SERVER_URL } = process.env;
     const loginctx = useContext(loginContext);
 
     const logout = () => {
-        Axios.get("http://localhost:5000/api/auth/logout", {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/auth/logout`, {
             withCredentials: true
         }).then((res) => {
             console.log(res);
