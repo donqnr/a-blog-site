@@ -6,12 +6,20 @@ import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
+
+
 export default function Read() {
 
     const { REACT_APP_SERVER_URL } = process.env;
     const params = useParams();
     const loginctx = useContext(loginContext);
     const [postData, setPostData] = useState<any>();
+    const [samePoster, setSamePoster] = useState<boolean>(false);
+
+    function posterPostId(posterId: string, postId: string) {
+        return posterId === postId;
+    }
+
     const blogpost = Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
         params: {
             id: params.id
@@ -20,8 +28,11 @@ export default function Read() {
         .then((res) => {
             setPostData(res.data);
         }).catch((err) => {
-            setPostData(null);
+            
         });
+
+
+
     return (
         <div className="align-items-center">
         { postData ? (
@@ -33,6 +44,17 @@ export default function Read() {
                         {postData.text}
                     </ReactMarkdown>
                 </p>
+            </div>
+            <div>
+            { loginctx ? (
+                <>
+                
+                </>
+            ) : (
+                <>
+                </>
+            )
+            }
             </div>
             </>
         ) : (

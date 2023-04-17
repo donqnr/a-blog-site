@@ -13,6 +13,8 @@ import Signup from "./components/signup";
 import NewPost from "./components/writenewpost";
 import Read from "./components/read";
 import ViewAll from "./components/viewall";
+import NotFoundPage from "./components/404";
+import EditBlogPost from "./components/editpost";
 
 const App = () => {
   
@@ -32,7 +34,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/read/:id" element={<Read />} />
+        <Route path="/editpost/:editid" element={<EditBlogPost />} />
         <Route path="/viewall" element={<ViewAll />} />
+        <Route path="/404" element={<NotFoundPage />} />
       </Routes>
       <div style={{ margin: 20 }}>
 

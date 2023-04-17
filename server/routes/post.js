@@ -20,6 +20,28 @@ router.post("/newblogpost", (req, res) => {
     }
 });
 
+router.post("/editblogpost", (req, res) => {
+    const postId = req.body.postId;
+    const newTitle = req.body.newTitle;
+    const newText = req.body.newText;
+    BlogPost.findById(postId)
+    .then((post) => {
+        // Check if the user is the same as the one who made the post
+        // Not sure how secure this method is
+        if (req.user && req.user._id == post.posterId) { 
+            post.title = newTitle;          
+            post.text = newText;
+            post.last_edited = Date.now();
+            post.save();
+            res.status(200).send(post);
+        } else {
+            res.status(401).send("Unauthorized");
+        }
+    }).catch((err) => {
+        res.status(404).send(err);
+    });
+});
+
 router.get("/blogpost",(req, res) => {
     const id = req.query.id;
     BlogPost.findById(id)

@@ -17,6 +17,10 @@ var blogPostSchema = new mongoose.Schema(
             type: Date,
             default: Date.now
         },
+        last_edited: {
+            type: Date,
+            default: Date.now
+        },
         likes: {
             type: Number,
             default: 0
@@ -24,7 +28,10 @@ var blogPostSchema = new mongoose.Schema(
         dislikes: {
             type: Number,
             default: 0
-        }
+        },
+        liked_by: [{
+            type: String
+        }]
     },
     { strict: false }
 );
