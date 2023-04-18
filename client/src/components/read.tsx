@@ -3,7 +3,7 @@ import { loginContext } from "./context";
 import Axios from "axios";
 import ReactMarkdown from "react-markdown";
  
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
 
@@ -15,11 +15,6 @@ export default function Read() {
     const loginctx = useContext(loginContext);
     const [postData, setPostData] = useState<any>();
     const [samePoster, setSamePoster] = useState<boolean>(false);
-
-    function posterPostId(posterId: string, postId: string) {
-        return posterId === postId;
-    }
-
     const blogpost = Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
         params: {
             id: params.id
@@ -27,6 +22,9 @@ export default function Read() {
         })
         .then((res) => {
             setPostData(res.data);
+            if (loginctx?._id === res.data.posterId) {
+                setSamePoster(true);
+            }
         }).catch((err) => {
             
         });
@@ -46,12 +44,20 @@ export default function Read() {
                 </p>
             </div>
             <div>
-            { loginctx ? (
+
+            <Link className="likeBtn ms-auto" to=""> Like </Link>
+            |
+            <Link className="dislikeBtn ms-auto" to=""> Dislike </Link>
+            { samePoster ? (
                 <>
-                
+                | 
+                <Link className="editBtn ms-auto" to={`/editpost/${postData._id}`}> 
+                Edit Post
+                </Link>
                 </>
             ) : (
                 <>
+                
                 </>
             )
             }

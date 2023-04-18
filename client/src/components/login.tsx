@@ -9,12 +9,14 @@ export default function Login() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
     const send = () => {
         axios({
             method: "POST",
             data: {
                 username: loginUser,
-                password: loginPassword
+                password: loginPassword,
+                remember: rememberMe
             },
             withCredentials: true,
             url: `${REACT_APP_SERVER_URL}/api/auth/login`,
@@ -40,13 +42,20 @@ export default function Login() {
                 placeholder="Password"
                 onChange={e => setLoginPassword(e.target.value)}>
             </input>
+            Remember Me 
+            <input type="checkbox"
+            className="remember"
+            value="Remember Me"
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}>
+            </input>
+            <br></br>
             <button onClick={send}>Log In</button>
             <div>            
                 <Link className="signUpBtn" to="/signup">
                     <a href="#">Click here to register a new account.</a>
                 </Link>
             </div>
-
         </div>
     );
 };

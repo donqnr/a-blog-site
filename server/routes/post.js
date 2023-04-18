@@ -56,6 +56,11 @@ router.get("/blogpost",(req, res) => {
     });
 });
 
+router.post("/like",(req, res) => {
+    const postId = req.body.postId;
+    BlogPost.findById(postId);
+});
+
 router.get("/allblogposts",(req,res) => {
     BlogPost.find({})
         .then((posts) => {

@@ -1,7 +1,10 @@
 const express = require("express"),
       router = express.Router(),
       passport = require("passport"),
-      User = require('../models/users');
+      User = require('../models/users'),
+      jwt = require('jsonwebtoken');
+
+require("dotenv").config({ path: "./config.env" });
 
 /* router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
@@ -15,7 +18,25 @@ router.post("/login", (req, res, next) => {
     else {
       req.logIn(user,(err) => {
         if (err) throw err;
-        res.send("Succesfully Authenticated");
+/*         const accessToken = jwt.sign(
+          { "username": user.username },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: '5m' }
+        );
+        const refreshToken = jwt.sign(
+          { "username": user.username },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: '3d' }
+        );
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000}); */
+
+        if ( req.body.remember ) {
+          req.session.cookie.originalMaxAge = 24 * 60 * 60 * 1000 // Expires in 1 day
+        } else {
+          req.session.cookie.expires = false
+        }
+
+        res.status(200).json({ 'success': `User ${user.username} logged in` });
         console.log(req.user);
       })
     }
