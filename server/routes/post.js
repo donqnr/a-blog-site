@@ -58,7 +58,14 @@ router.get("/blogpost",(req, res) => {
 
 router.post("/like",(req, res) => {
     const postId = req.body.postId;
-    BlogPost.findById(postId);
+    BlogPost.findById(postId)
+    .then((post) => {
+
+    });
+});
+
+router.get("/search",(req,res) => {
+    
 });
 
 router.get("/allblogposts",(req,res) => {

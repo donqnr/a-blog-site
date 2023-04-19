@@ -30,12 +30,17 @@ mongoose
 
 
 app.use(session({
+  name: 'asdf.sid',
   secret: process.env.SECRET,
+  httpOnly: true,
+  secure: true,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 19 * 60000 },
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
-  //store: new MongoStore({ mongooseConnection: mongoose.connection })
+  cookie: { maxAge: 19 * 60000,
+           domain: process.env.CORS_ORIGIN,
+          sameSite: 'lax'},
+  store: new MongoStore({ mongooseConnection: mongoose.connection,
+        clear_interval: 3600 })
 }));
 
 app.use(cookieParser());
