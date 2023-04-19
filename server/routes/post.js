@@ -65,7 +65,7 @@ router.post("/like",(req, res) => {
 });
 
 router.get("/search",(req,res) => {
-    
+    const filter = {};
 });
 
 router.get("/allblogposts",(req,res) => {

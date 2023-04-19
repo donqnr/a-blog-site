@@ -11,29 +11,20 @@ require("dotenv").config({ path: "./config.env" });
     failureRedirect: '/login',
   })); */
 
-router.post("/login", (req, res, next) => { 
-  passport.authenticate("local", (err, user, info) => {
-    if (err) throw err;
-    if (!user) res.status(400).send("Invalid User or Password");
-    else {
-      req.logIn(user,(err) => {
-        if (err) throw err;
+  router.post("/login", (req, res, next) => { 
+    passport.authenticate("local", (err, user, info) => {
+      if (err) throw err;
+      if (!user) res.status(400).send("Invalid User or Password");
+      else {
+        req.logIn(user,(err) => {
+          if (err) throw err;
+          res.send("Succesfully Authenticated");
+          console.log(req.user);
+        })
+      }
+    })(req, res, next);
+  });
 
-        // Session cookies kept being rejected in deployment,
-        // so fuck all that for now i can't be arsed
-
-/*         if ( req.body.remember ) {
-          req.session.cookie.originalMaxAge = 24 * 60 * 60 * 1000 // Expires in 1 day
-        } else {
-          req.session.cookie.expires = false
-        } */
-
-        res.status(200).json({ 'success': `User ${user.username} logged in` });
-        console.log(req.user);
-      })
-    }
-  })(req, res, next);
-});
 
 router.post('/signup', (req, res) => {
   var user = new User({
