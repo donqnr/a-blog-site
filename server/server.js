@@ -22,6 +22,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set("trust proxy", 1);
 
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true })
@@ -31,9 +32,14 @@ mongoose
 
   app.use(session({
     secret: process.env.SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
-    //store: new MongoStore({ mongooseConnection: mongoose.connection })
+    cookie: {
+      maxAge: 30 * 60000,
+      sameSite: 'none',
+      secure: true
+    },
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
   }));
 
 app.use(cookieParser(process.env.SECRET));
