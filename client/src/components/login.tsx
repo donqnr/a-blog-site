@@ -42,13 +42,13 @@ export default function Login() {
                 placeholder="Password"
                 onChange={e => setLoginPassword(e.target.value)}>
             </input>
-            Remember Me 
+            {/* Remember Me 
             <input type="checkbox"
             className="remember"
-            value="Remember Me"
+            value="Remember Me"     // Remember me button disabled for now due to bullshit
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}>
-            </input>
+            </input> */}
             <br></br>
             <button onClick={send}>Log In</button>
             <div>            

@@ -30,19 +30,23 @@ mongoose
 
 
 app.use(session({
-  name: 'asdf.sid',
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 5 * 60000,
-          httpOnly: true,
-          domain: process.env.COOKIE_DOMAIN,
-          sameSite: 'lax'},
-  store: new MongoStore({ mongooseConnection: mongoose.connection,
-        clear_interval: 3600 })
+  proxy: true,
+
+  // -- I was going to store sessions with mongostore,
+  // -- but in deployment it kept rejecting the cookies as third-party,
+  // -- which couldn't be fixed no matter what I did. shit's fucked
+
+  //cookie: { maxAge: 5 * 60000,
+    //httpOnly: true,
+    //domain: process.env.COOKIE_DOMAIN,
+    //sameSite: 'none'},
+  //store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-app.use(cookieParser());
+app.use(cookieParser(process.env.SECRET));
 
 app.use(passport.initialize());
 app.use(passport.session());
