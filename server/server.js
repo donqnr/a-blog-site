@@ -32,12 +32,11 @@ mongoose
 app.use(session({
   name: 'asdf.sid',
   secret: process.env.SECRET,
-  httpOnly: true,
-  secure: true,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 19 * 60000,
-           domain: process.env.CORS_ORIGIN,
+  cookie: { maxAge: 5 * 60000,
+          httpOnly: true,
+          domain: process.env.COOKIE_DOMAIN,
           sameSite: 'lax'},
   store: new MongoStore({ mongooseConnection: mongoose.connection,
         clear_interval: 3600 })
