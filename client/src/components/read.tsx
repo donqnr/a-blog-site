@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
 import ReactMarkdown from "react-markdown";
@@ -12,23 +12,30 @@ export default function Read() {
 
     const { REACT_APP_SERVER_URL } = process.env;
     const params = useParams();
-    const loginctx = useContext(loginContext);
+    const { currentUser } = useContext(loginContext);
     const [postData, setPostData] = useState<any>();
+    const [poster, setPoster] = useState();
     const [samePoster, setSamePoster] = useState<boolean>(false);
-    const blogpost = Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
+    const getPost = () => {     
+        Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
         params: {
             id: params.id
         }
         })
         .then((res) => {
             setPostData(res.data);
-            if (loginctx?._id === res.data.posterId) {
+            if (currentUser?._id === res.data.posterId) {
                 setSamePoster(true);
             }
-        }).catch((err) => {
-            
-        });
 
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    useEffect (() => {
+        getPost();
+    }, []);
 
 
     return (
@@ -69,7 +76,6 @@ export default function Read() {
             </>
         )
     }
-
         </div>
     );
 };

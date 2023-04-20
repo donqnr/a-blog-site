@@ -5,12 +5,13 @@ import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 
 export default function HomeView() {
-  const loginctx = useContext(loginContext);
+
+  const { currentUser } = useContext(loginContext);
   return (
     <div className="align-items-center">
-    { loginctx ? (
+    { currentUser ? (
       <>
-      <p>Logged in as {loginctx.username}</p>
+      <p>Logged in as {currentUser.username}</p>
       </>
     ) : (
       <>

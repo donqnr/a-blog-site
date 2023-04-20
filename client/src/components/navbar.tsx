@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Axios from "axios";
 import { loginContext } from "./context";
  
@@ -9,16 +9,17 @@ import { NavLink, Link } from "react-router-dom";
 
 export default function Navbar() {
     const { REACT_APP_SERVER_URL } = process.env;
-    const loginctx = useContext(loginContext);
+    const { currentUser, handleLogout } = useContext(loginContext);
+    const [searchBar, setSearchBar] = useState("")
 
     const logout = () => {
         Axios.get(`${REACT_APP_SERVER_URL}/api/auth/logout`, {
             withCredentials: true
         }).then((res) => {
             console.log(res);
-            if (res.data === "success") {
-                
-            }
+            handleLogout();
+        }).catch((err) => {
+            console.log(err);
         });
     }
 
@@ -33,14 +34,21 @@ export default function Navbar() {
                         View all posts
                     </button>
             </NavLink>
-            {loginctx ? (
+                <input type='text' className="searchBar ms-auto" aria-describedby="search-button-addon" onChange={e => setSearchBar(e.target.value)}/>
+                    <div className="input-group-append">
+                        <Link className="searchLink" to={`/results/${searchBar}`}>
+                            <button className="btn btn-outline-secondary" type="button" id="search-button-addon">Search</button>
+                        </Link>
+                    </div>
+            
+            {currentUser ? (
                 <>
-                <NavLink className="newPostBtn" to="/newpost">
+                <NavLink className="newPostBtn ms-auto" to="/newpost">
                     <button className="btn btn-outline-primary newPostBtn" type="button">
                         Make a Blog Post
                     </button>
                 </NavLink>
-                <Link className="loginBtn ms-auto" onClick={logout} to="/">
+                <Link className="logoutBtn ms-auto" onClick={logout} to="/">
                     <button className="btn btn-outline-success logoutBtn" type="button" style={{ marginLeft: 25, marginRight: 25 }}>Logout</button>
                 </Link>
                 </>

@@ -65,7 +65,15 @@ router.post("/like",(req, res) => {
 });
 
 router.get("/search",(req,res) => {
-    const filter = {};
+    const search_query = req.query.search_query;
+    const filter = { title: {$regex: search_query} };
+    BlogPost.find(filter)
+    .then((posts) => {
+        res.send(posts).status(200);
+    }).catch((err) => {
+        console.log(err);
+        res.status(404).send(err);
+    })
 });
 
 router.get("/allblogposts",(req,res) => {

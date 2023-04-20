@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
  
@@ -9,28 +9,35 @@ import { useParams } from "react-router-dom";
 export default function EditBlogPost() {
     const { REACT_APP_SERVER_URL } = process.env;
     const params = useParams();
-    const loginctx = useContext(loginContext);
+    const { currentUser } = useContext(loginContext);
     const [postData, setPostData] = useState<any>();
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
+    const [correctUser, setCorrectUser] = useState(false);
 
-    const a = Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
-        params: {
-            id: params.editid
-        }
-        })
-        .then((res) => {
-            if (postData == null) {
-                setPostData(res.data);
-                setTitle(res.data.title);
-                setText(res.data.text);
+    const getPost = () => {     
+        Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
+            params: {
+                id: params.editid
             }
-        }).catch((err) => {
-            setPostData(null);
-        });
+            })
+            .then((res) => {
+                if (postData == null) {
+                    setPostData(res.data);
+                    setTitle(res.data.title);
+                    setText(res.data.text);
+                }
+            }).catch((err) => {
+                setPostData(null);
+            });
+    }
+
+    useEffect (() => {
+        getPost();
+    }, []);
     
     const send = () => {
-        if (loginctx) {
+        if (currentUser) {
             Axios({
                 method: "POST",
                 data: {

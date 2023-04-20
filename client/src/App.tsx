@@ -15,6 +15,7 @@ import Read from "./components/read";
 import ViewAll from "./components/viewall";
 import NotFoundPage from "./components/404";
 import EditBlogPost from "./components/editpost";
+import SearchResults from "./components/searchresults";
 
 const App = () => {
   
@@ -33,10 +34,11 @@ const App = () => {
         <Route path="/" element={<HomeView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/results/:search_query" element={<SearchResults />} />
         <Route path="/read/:id" element={<Read />} />
         <Route path="/editpost/:editid" element={<EditBlogPost />} />
         <Route path="/viewall" element={<ViewAll />} />
-        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <div style={{ margin: 20 }}>
 

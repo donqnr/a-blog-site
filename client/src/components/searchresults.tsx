@@ -7,15 +7,19 @@ import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
 
-export default function ViewAll() {
+export default function SearchResults() {
 
     const { REACT_APP_SERVER_URL } = process.env;
-    const [postData, setPostData] = useState<any[]>();
+    const params = useParams();
+    const [posts, setPosts] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/allblogposts`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/search`, {
+            params: {
+                search_query: params.search_query
+            }
         })
         .then((res) => {
-            setPostData(res.data);
+            setPosts(res.data);
         }).catch((err) => {
             console.log(err);
         });
@@ -29,7 +33,7 @@ export default function ViewAll() {
         <div className="align-items-center">
             <ul>
                 {
-                    postData?.map((post: any) => {
+                    posts?.map((post: any) => {
                         return ( 
 
                             <li>
