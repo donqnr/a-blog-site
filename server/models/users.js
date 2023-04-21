@@ -24,7 +24,10 @@ var userSchema = new mongoose.Schema(
         date_created: {
             type: Date,
             default: Date.now
-        }
+        },
+        liked_posts: [{
+            type: String
+        }]
     },
     { strict: false }
 );

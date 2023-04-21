@@ -30,7 +30,8 @@ var blogPostSchema = new mongoose.Schema(
             default: 0
         },
         liked_by: [{
-            type: String
+            type: String,
+            unique: true
         }]
     },
     { strict: false }

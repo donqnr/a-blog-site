@@ -58,15 +58,21 @@ router.get("/blogpost",(req, res) => {
 
 router.post("/like",(req, res) => {
     const postId = req.body.postId;
-    BlogPost.findById(postId)
-    .then((post) => {
-
-    });
+    if (req.user) {
+        BlogPost.findById(postId)
+        .then((post) => {
+            post.liked_by.push(req.user._id);
+            post.save();
+            res.status(200).send(res);
+        }).catch ((err) => {
+            res.status(401).send(err);
+        });
+    }
 });
 
 router.get("/search",(req,res) => {
     const search_query = req.query.search_query;
-    const filter = { title: {$regex: search_query} };
+    const filter = { title: {$regex: search_query}, };
     BlogPost.find(filter)
     .then((posts) => {
         res.send(posts).status(200);
