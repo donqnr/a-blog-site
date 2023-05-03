@@ -1,4 +1,5 @@
 const blogpost = require("../models/blogpost");
+const { prependListener } = require("../models/users");
 
 const express = require("express"),
       router = express.Router(),
@@ -58,16 +59,31 @@ router.get("/blogpost",(req, res) => {
 
 router.post("/like",(req, res) => {
     const postId = req.body.postId;
-    if (req.user) {
-        BlogPost.findById(postId)
+    BlogPost.findById(postId)
         .then((post) => {
-            post.liked_by.push(req.user._id);
-            post.save();
-            res.status(200).send(res);
+            if (req.user) {
+                if (!post.liked_by.includes(req.user._id)) {
+                    console.log(req.user._id);
+                    post.liked_by.push(req.user._id);
+                    post.save();
+                    res.send(res).status(200);
+                } else  {
+                    for ( let i = 0; i < post.liked_by.length; i++ ) {
+                        console.log(req.user._id);
+                        if (post.liked_by[i] === req.user._id.toString()) {
+                            post.liked_by.splice(i,1);
+                        }
+                    }
+                    post.save();
+                    res.send(res).status(200);
+                }
+
+            } else {
+                res.status(401).send("Unauthorized");
+            }
         }).catch ((err) => {
             res.status(401).send(err);
         });
-    }
 });
 
 router.get("/search",(req,res) => {

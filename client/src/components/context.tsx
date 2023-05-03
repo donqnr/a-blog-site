@@ -5,10 +5,6 @@ export const loginContext = createContext<any>({});
 
 const { REACT_APP_SERVER_URL } = process.env;
 
-const handleLogout = () => {
-    
-}
-
 type ProviderProps = {
     children: ReactNode;
 };

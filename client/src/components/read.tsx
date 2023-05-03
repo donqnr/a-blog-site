@@ -4,8 +4,9 @@ import Axios from "axios";
 import ReactMarkdown from "react-markdown";
  
 import { Link, useParams } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
 
+import "bootstrap/dist/css/bootstrap.css";
+import "../css/mainview.css"
 
 
 export default function Read() {
@@ -45,25 +46,30 @@ export default function Read() {
     }
 
     const likePost = () => {
-        Axios.post(`${REACT_APP_SERVER_URL}/like`, {
-            data: {
-                postId: params.id
-            }
-        })
-        .then((res) => {
-            console.log(res);
-        }).catch((err) => {
-            console.log(err);
-        })
+        if (currentUser) {
+            Axios({
+                method: "POST",
+                data: {
+                    postId: params.id
+                },
+                withCredentials: true,
+                url: `${REACT_APP_SERVER_URL}/like`
+            })
+            .then((res) => {
+                console.log(res);
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
     }
-
+    
     useEffect (() => {
         getPost();
     }, []);
 
 
     return (
-        <div className="align-items-center">
+        <div className="align-items-center content">
         { postData ? (
             <>
             <div>

@@ -18,8 +18,11 @@ require("dotenv").config({ path: "./config.env" });
       else {
         req.logIn(user,(err) => {
           if (err) throw err;
-          res.send("Succesfully Authenticated");
-          console.log(req.user);
+          jwt.sign({user}, process.env.JWT_TOKEN, { expiresIn: '3h' }, (err, token) => {
+            if (err) throw err;
+            res.send(token);
+            console.log(token);
+          });
         })
       }
     })(req, res, next);
