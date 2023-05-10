@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.css";
  
 import { NavLink, Link } from "react-router-dom";
 
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 export default function Navbar() {
     const { REACT_APP_SERVER_URL } = process.env;
@@ -29,7 +31,7 @@ export default function Navbar() {
             <NavLink className="navbar-brand" to="/" style={{ marginLeft: 25, marginRight: 25 }}>
                     A Site
             </NavLink>
-            <NavLink className="newPostBtn" to="/viewall">
+            <NavLink className="allPostsBtn" to="/viewall">
                     <button className="btn btn-outline-primary newPostBtn" type="button">
                         View all posts
                     </button>
@@ -43,14 +45,25 @@ export default function Navbar() {
             
             {currentUser ? (
                 <>
-                <NavLink className="newPostBtn ms-auto" to="/newpost">
-                    <button className="btn btn-outline-primary newPostBtn" type="button">
-                        Make a Blog Post
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className="ms-auto">
+                        {currentUser?.username}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item href={`/profile/${currentUser?._id}`}>View Profile</Dropdown.Item>
+                        <Dropdown.Item href="/newpost">Make a Blog Post</Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={logout} to="/">Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                
+
+                {/* <Link className="logoutBtn ms-auto" onClick={logout} to="/">
+                    <button className="btn btn-outline-success logoutBtn" type="button" style={{ marginLeft: 25, marginRight: 25 }}>
+                        Logout
                     </button>
-                </NavLink>
-                <Link className="logoutBtn ms-auto" onClick={logout} to="/">
-                    <button className="btn btn-outline-success logoutBtn" type="button" style={{ marginLeft: 25, marginRight: 25 }}>Logout</button>
-                </Link>
+                </Link> */}
                 </>
             ) : (
                 <>

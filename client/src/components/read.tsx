@@ -61,11 +61,12 @@ export default function Read() {
                 console.log(err);
             })
         }
+        
     }
     
     useEffect (() => {
         getPost();
-    }, []);
+    }, [currentUser]);
 
 
     return (
@@ -84,7 +85,7 @@ export default function Read() {
             </div>
             <div>
 
-            <button onClick={likePost}>Like</button>
+            <button onClick={likePost}>Like</button> {postData.liked_by.length}
             { samePoster ? (
                 <>
                 | 

@@ -16,6 +16,7 @@ import ViewAll from "./components/viewall";
 import NotFoundPage from "./components/404";
 import EditBlogPost from "./components/editpost";
 import SearchResults from "./components/searchresults";
+import ViewProfile from "./components/profile";
 
 const App = () => {
   
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/read/:id" element={<Read />} />
         <Route path="/editpost/:editid" element={<EditBlogPost />} />
         <Route path="/viewall" element={<ViewAll />} />
+        <Route path="/profile/:userId" element={<ViewProfile />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <div style={{ margin: 20 }}>

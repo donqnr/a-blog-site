@@ -24,7 +24,9 @@ export default function Login() {
             if (res.status == 200) {
                 window.location.href = "/"
             }
-            console.log(res)
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
         });
     };
     return (
