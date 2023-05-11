@@ -44,7 +44,7 @@ export default function HomeView() {
       </>
     )   
     }
-    <p>Stuff goes here</p>
+    <h2>Latest Posts</h2>
       <div>
         <ul>
           {

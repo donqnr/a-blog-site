@@ -108,4 +108,26 @@ router.get("/allblogposts",(req,res) => {
         })
 });
 
+router.get("/postsbyuser",(req,res) => {
+    const userId = req.query.id;
+    BlogPost.find({ posterId : userId })
+    .then((posts) => {
+        res.send(posts).status(200);
+    }).catch((err) => {
+        console.log(err);
+        res.status(404).send(err);
+    });
+});
+
+router.get("/postslikedby",(req,res) => {
+    const userId = req.query.id;
+    BlogPost.find({ liked_by : userId })
+    .then((posts) => {
+        res.send(posts).status(200);
+    }).catch((err) => {
+        console.log(err);
+        res.status(404).send(err);
+    })
+});
+
 module.exports = router;

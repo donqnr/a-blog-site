@@ -17,6 +17,7 @@ import NotFoundPage from "./components/404";
 import EditBlogPost from "./components/editpost";
 import SearchResults from "./components/searchresults";
 import ViewProfile from "./components/profile";
+import AccountSettings from "./components/accsettings";
 
 const App = () => {
   
@@ -28,6 +29,7 @@ const App = () => {
       { loginctx ? (
         <>
         <Route path="/newpost" element={<NewPost />} />
+        <Route path="/account" element={<AccountSettings />} />
         </>
       ) : (
         <></>
