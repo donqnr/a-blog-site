@@ -12,7 +12,7 @@ export default function HomeView() {
   const [posts, setPosts] = useState<any[]>();
 
   const getPosts = () => {
-    Axios.get(`${REACT_APP_SERVER_URL}/allblogposts`, {
+    Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/allblogposts`, {
     })
     .then((res) => {
         var postData = res.data;
@@ -50,7 +50,7 @@ export default function HomeView() {
           {
             posts?.map((post: any) => {
               return ( 
-                <li>
+                <li key={post}>
                   <Link className="postLink" to={`/read/${post._id}`}>
                     {post.title}
                   </Link>

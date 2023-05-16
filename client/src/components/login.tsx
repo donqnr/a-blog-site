@@ -22,15 +22,14 @@ export default function Login() {
             url: `${REACT_APP_SERVER_URL}/api/auth/login`,
         }).then((res) => {
             if (res.status == 200) {
-                window.location.href = "/"
+                window.location.href = "/";
             }
-            console.log(res);
         }).catch((err) => {
             console.log(err);
         });
     };
     return (
-        <div>
+        <div className="align-items-center content">
             <h3>Login</h3>
             <input type="text"
                 className="form-control"

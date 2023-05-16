@@ -34,27 +34,31 @@ var userSchema = new mongoose.Schema(
 
 // Before saving, hash the given password
 userSchema.pre('save', function(next) {
-    var user = this
+    var user = this;
   
-    if ( !user.isModified('password') ) return next()
+    if ( !user.isModified('password') ) return next();
   
     bcrypt.hash(user.password, 10, (err, hash) => {
       if (err) {
-        return next(err)
+        return next(err);
       }
-      user.password = hash
-      next()
-    })
-  })
+      user.password = hash;
+      next();
+    });
+  });
   
+  // Compare given password with the account's password
 userSchema.methods.login = function(password) {
     var user = this
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
-        if ( err ) { reject(err) }
-        resolve()
-      })
-    })
+        if (result) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+    });
   }
 
 module.exports = mongoose.model("users", userSchema);

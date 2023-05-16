@@ -31,8 +31,12 @@ passport.use(
                     message: "Invalid user or password"
                 });
             }
-        user.login(password).then(() => {
-            return done(null, user);
+            user.login(password).then(() => {
+                return done(null, user);
+            }).catch((err) => {
+            return done(err, false, {
+                message: 'Invalid user or password'
+            });
         })
         }) 
        .catch((err)=>{

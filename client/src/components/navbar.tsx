@@ -53,6 +53,7 @@ export default function Navbar() {
                     <Dropdown.Menu>
                         <Dropdown.Item href={`/profile/${currentUser?._id}`}>View Profile</Dropdown.Item>
                         <Dropdown.Item href="/newpost">Make a Blog Post</Dropdown.Item>
+                        <Dropdown.Item href="/account">Manage Account</Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item onClick={logout} to="/">Logout</Dropdown.Item>
                     </Dropdown.Menu>

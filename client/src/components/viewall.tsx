@@ -5,6 +5,7 @@ import { BlogPostInterface } from '../interfaces/blogpost'
  
 import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/mainview.css"
 
 
 export default function ViewAll() {
@@ -12,10 +13,16 @@ export default function ViewAll() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [postData, setPostData] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/allblogposts`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/allblogposts`, {
         })
         .then((res) => {
-            setPostData(res.data);
+        var postData = res.data;
+        postData.sort(function(a: any, b: any) {
+            var dateA = new Date(a.date_created);
+            var dateB = new Date(b.date_created);
+            return dateB.valueOf() - dateA.valueOf();
+            });
+        setPostData(postData);
         }).catch((err) => {
             console.log(err);
         });
@@ -26,7 +33,8 @@ export default function ViewAll() {
     }, []);
 
     return (
-        <div className="align-items-center">
+        <div className="align-items-center content">
+            <h2>All blog posts</h2>
             <ul>
                 {
                     postData?.map((post: any) => {

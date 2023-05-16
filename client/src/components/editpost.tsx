@@ -3,6 +3,7 @@ import { loginContext } from "./context";
 import Axios from "axios";
  
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/mainview.css"
  
 import { useParams } from "react-router-dom";
 
@@ -16,7 +17,7 @@ export default function EditBlogPost() {
     const [correctUser, setCorrectUser] = useState(false);
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/blogpost`, {
             params: {
                 id: params.editid
             }
@@ -46,7 +47,7 @@ export default function EditBlogPost() {
                     newText: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/editblogpost`
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/editblogpost`
             }).then((res) => {
                 console.log(res);
                 if (res.status === 200) {
@@ -58,7 +59,7 @@ export default function EditBlogPost() {
         }
     };
     return (
-        <div>
+        <div className="align-items-center content">
             { postData ? (
                 <>
                 <h3>Edit the Blog Post</h3>

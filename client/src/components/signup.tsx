@@ -20,6 +20,12 @@ export default function Signup() {
             },
             withCredentials: true,
             url: `${REACT_APP_SERVER_URL}/api/auth/signup`
+        }).then((res) => {
+            if (res.status == 201) {
+                window.location.href = "/login";
+            }
+        }).catch((err) => {
+            console.log(err);
         });
     };
     return (

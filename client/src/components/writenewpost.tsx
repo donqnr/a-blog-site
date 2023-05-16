@@ -3,6 +3,7 @@ import { loginContext } from "./context";
 import Axios from "axios";
  
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/mainview.css"
  
 import { NavLink } from "react-router-dom";
 
@@ -22,7 +23,7 @@ export default function NewBlogPost() {
                     text: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/newblogpost`
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/newblogpost`
             }).then((res) => {
                 console.log(res);
                 if (res.status == 200) {
@@ -32,7 +33,7 @@ export default function NewBlogPost() {
         }
     };
     return (
-        <div>
+        <div className="align-items-center content">
             
             <h3>Write a Blog Post</h3>
             <br></br>

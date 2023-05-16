@@ -28,7 +28,7 @@ export default function Profile() {
     }
 
     const getUserPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/postsbyuser`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/postsbyuser`, {
             params: {
                 id: params.userId
             }
@@ -42,7 +42,7 @@ export default function Profile() {
     }
 
     const getLikedPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/postslikedby`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/postslikedby`, {
             params: {
                 id: params.userId
             }

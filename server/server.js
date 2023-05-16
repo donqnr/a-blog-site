@@ -10,6 +10,7 @@ require("dotenv").config({ path: "./config.env" });
 
 const auth = require("./routes/auth");
 const blogposts = require("./routes/post");
+const users = require("./routes/user");
 
 const MONGO_URI = process.env.MONGO_URI;
 const port = process.env.PORT || 5000;
@@ -48,7 +49,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/auth", auth);
-app.use("/", blogposts);
+app.use("/api/blogpost", blogposts);
+app.use("/api/user", users);
+
+
 
 app.get("/", (req, res) => res.send("e"));
 app.listen(port, () => console.log(

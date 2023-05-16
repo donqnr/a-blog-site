@@ -17,15 +17,17 @@ export default function Read() {
     const [postData, setPostData] = useState<any>();
     const [poster, setPoster] = useState<any>();
     const [samePoster, setSamePoster] = useState<boolean>(false);
+    const [likeAmount, setLikeAmount] = useState<any>(false);
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/blogpost`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/blogpost`, {
         params: {
             id: params.id
         }
         })
         .then((res) => {
             setPostData(res.data);
+            setLikeAmount(res.data.liked_by.length);
             if (currentUser?._id === res.data.posterId) {
                 setSamePoster(true);
             }
@@ -53,7 +55,7 @@ export default function Read() {
                     postId: params.id
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/like`
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/like`
             })
             .then((res) => {
                 console.log(res);

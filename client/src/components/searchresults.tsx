@@ -13,7 +13,7 @@ export default function SearchResults() {
     const params = useParams();
     const [posts, setPosts] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/search`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/search`, {
             params: {
                 search_query: params.search_query
             }
@@ -30,7 +30,8 @@ export default function SearchResults() {
     }, []);
 
     return (
-        <div className="align-items-center">
+        <div className="align-items-center content">
+            <h2>Search results</h2>
             <ul>
                 {
                     posts?.map((post: any) => {
