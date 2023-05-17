@@ -63,7 +63,7 @@ router.get("/userbyid", (req, res) => {
       };
       res.send(userinfo).status(200);
     }).catch((err) => {
-      console.log(404).send(err);
+      console.log(404);
     });
 });
 

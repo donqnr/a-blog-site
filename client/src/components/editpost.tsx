@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
  
@@ -33,7 +33,7 @@ export default function EditBlogPost() {
             });
     }
 
-    useEffect (() => {
+    useMemo (() => {
         getPost();
     }, []);
     

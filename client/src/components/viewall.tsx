@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
 import { BlogPostInterface } from '../interfaces/blogpost'
@@ -22,7 +22,25 @@ export default function ViewAll() {
             var dateB = new Date(b.date_created);
             return dateB.valueOf() - dateA.valueOf();
             });
-        setPostData(postData);
+
+            // Get the names of the author's of the received posts
+            // This might be a terrible way of implementing this
+            const promises = postData.map((post: any) => {
+                return Axios.get(`${REACT_APP_SERVER_URL}/api/auth/userbyid`, {
+                    params: {
+                        id: post.posterId
+                    }
+                }).then((user) => {
+                    post.poster = user.data.username;
+                }).catch((err) => {
+                    console.log(err);
+                })
+            })
+
+            Promise.all(promises).then((res) => {
+                setPostData(postData);
+            });
+
         }).catch((err) => {
             console.log(err);
         });
@@ -40,11 +58,11 @@ export default function ViewAll() {
                     postData?.map((post: any) => {
                         return ( 
 
-                            <li>
+                            <li key={post}>
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
-                                 <p>Posted by 
+                                 <p>Posted by {post.poster}
                                  </p>
                             </li>
                         )
