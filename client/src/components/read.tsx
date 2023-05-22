@@ -17,6 +17,7 @@ export default function Read() {
     const [postData, setPostData] = useState<any>();
     const [poster, setPoster] = useState<any>();
     const [samePoster, setSamePoster] = useState<boolean>(false);
+    const [userHasLiked, setUserHasLiked] = useState<boolean>(false);
     const [likeAmount, setLikeAmount] = useState<any>(false);
 
     const getPost = () => {     
@@ -27,8 +28,9 @@ export default function Read() {
         })
         .then((res) => {
             setPostData(res.data);
-            setLikeAmount(res.data.post.liked_by.length);
-            if (currentUser?._id === res.data.post.postedBy) {
+            setLikeAmount(res.data.liked_by.length);
+            setUserHasLiked(res.data.liked_by.includes(currentUser._id));
+            if (currentUser?._id === res.data.postedBy?._id) {
                 setSamePoster(true);
             }
         }).catch((err) => {
@@ -48,6 +50,7 @@ export default function Read() {
             })
             .then((res) => {
                 setLikeAmount(res.data.liked_by.length);
+                setUserHasLiked(res.data.liked_by.includes(currentUser._id));
                 console.log(res);
             }).catch((err) => {
                 console.log(err);
@@ -66,21 +69,31 @@ export default function Read() {
         { postData ? (
             <>
             <div>
-                <h1>{postData.post.title}</h1>
-                <h5>By {postData.posterName} | {postData.post.date_created}</h5>
+                <h1>{postData.title}</h1>
+                <h5>By {postData.postedBy?.username} | {postData.date_created}</h5>
                 <br></br>
                 <ReactMarkdown>
-                    {postData.post.text}
+                    {postData.text}
                 </ReactMarkdown>
             </div>
             <div>
 
-            <button onClick={likePost}>Like</button> {likeAmount}
+            { userHasLiked ? (
+                <>
+                <button className="btn btn-success likeBtn" onClick={likePost}>Like | {likeAmount}</button> 
+                </>
+            ): (
+                <>
+                <button className="btn btn-outline-success likeBtn" onClick={likePost}>Like | {likeAmount}</button> 
+                </>
+            )}
+
+            
             { samePoster ? (
                 <>
-                | 
-                <Link className="editBtn ms-auto" to={`/editpost/${postData.post._id}`}> 
-                Edit Post
+                
+                <Link className="editBtn ms-auto" to={`/editpost/${postData._id}`}> 
+                <button className="btn btn-outline-primary editBtn">Edit Post</button>
                 </Link>
                 </>
             ) : (

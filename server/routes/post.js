@@ -48,16 +48,12 @@ router.post("/editblogpost", (req, res) => {
 
 router.get("/blogpost",(req, res) => {
     const id = req.query.id;
-    BlogPost.findById(id).lean()
+    BlogPost.findById(id).populate('postedBy', 'username').lean()
     .then((post) => {
         if (!post) {
-            res.status(404).send("Blog Post Not Found");
+            res.send("Blog Post Not Found").status(404);
         } else {
-            User.findById(post.posterId)
-            .then((user) => {
-                posterName = user.username;
-                res.send({posterName,post}).status(200);
-            });
+            res.send(post).status(200);
         }
     }).catch((err) => {
         res.status(404).send("Could not find the blog post");

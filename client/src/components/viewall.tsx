@@ -43,7 +43,7 @@ export default function ViewAll() {
                     postData?.map((post: any) => {
                         return ( 
 
-                            <li key={post}>
+                            <li key={post._id}>
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
