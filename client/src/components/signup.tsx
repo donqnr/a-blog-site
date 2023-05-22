@@ -29,26 +29,32 @@ export default function Signup() {
         });
     };
     return (
-        <div>
+        <div className="content">
             <h3>Sign Up</h3>
+            Username*:
             <input type="text"
             className="form-control"
             id="name"
             placeholder="Username"
             onChange={e => setSignUpUser(e.target.value)}>
             </input>
+            E-Mail*:
             <input type="text"
             className="form-control"
             id="name"
             placeholder="E-Mail Address"
             onChange={e => setSignUpEmail(e.target.value)}>
             </input>
+            Password*:
             <input type="password"
             className="form-control"
             id="password"
             placeholder="Password"
             onChange={e => setSignUpPassword(e.target.value)}>
             </input>
+            <br></br>
+            * Required<br></br>
+            <br></br>
             <button onClick={send}>Sign Up</button>
         </div>
     );

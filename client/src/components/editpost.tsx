@@ -25,8 +25,8 @@ export default function EditBlogPost() {
             .then((res) => {
                 if (postData == null) {
                     setPostData(res.data);
-                    setTitle(res.data.title);
-                    setText(res.data.text);
+                    setTitle(res.data.post.title);
+                    setText(res.data.post.text);
                 }
             }).catch((err) => {
                 setPostData(null);

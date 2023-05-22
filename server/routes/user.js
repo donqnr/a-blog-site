@@ -1,8 +1,9 @@
 const express = require("express"),
-      router = express.Router(),
-      passport = require("passport"),
-      User = require('../models/users'),
-      jwt = require('jsonwebtoken');
+    User = require('../models/users');
+    BlogPost = require('../models/blogpost');
+    router = express.Router(),
+    passport = require("passport"),
+    jwt = require('jsonwebtoken');
 
 require("dotenv").config({ path: "./config.env" });
 

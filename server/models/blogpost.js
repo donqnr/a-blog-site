@@ -7,6 +7,10 @@ var blogPostSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        postedBy: {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: "users"
+        },
         title: {
             type: String,
         },
@@ -29,6 +33,10 @@ var blogPostSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        likedby: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "users"
+        }],
         liked_by: [{
             type: String,
             unique: true

@@ -1,16 +1,19 @@
-const blogpost = require("../models/blogpost");
 const { prependListener } = require("../models/users");
 
+const User = require('../models/users'),
+    BlogPost = require('../models/blogpost');
+
 const express = require("express"),
-      router = express.Router(),
-      passport = require("passport"),
-      User = require('../models/users');
-      BlogPost = require('../models/blogpost');
+    router = express.Router(),
+    passport = require("passport");
+
+
 
 router.post("/newblogpost", (req, res) => {
     if (req.user) {
         var blogpost = new BlogPost({
             posterId: req.user._id,
+            postedBy: req.user._id,
             title: req.body.title,
             text: req.body.text,
         })
@@ -45,12 +48,16 @@ router.post("/editblogpost", (req, res) => {
 
 router.get("/blogpost",(req, res) => {
     const id = req.query.id;
-    BlogPost.findById(id)
+    BlogPost.findById(id).lean()
     .then((post) => {
         if (!post) {
             res.status(404).send("Blog Post Not Found");
         } else {
-            res.send(post).status(200);
+            User.findById(post.posterId)
+            .then((user) => {
+                posterName = user.username;
+                res.send({posterName,post}).status(200);
+            });
         }
     }).catch((err) => {
         res.status(404).send("Could not find the blog post");
@@ -66,7 +73,7 @@ router.post("/like",(req, res) => {
                     console.log(req.user._id);
                     post.liked_by.push(req.user._id);
                     post.save();
-                    res.send(res).status(200);
+                    res.send(post).status(200);
                 } else  {
                     for ( let i = 0; i < post.liked_by.length; i++ ) {
                         console.log(req.user._id);
@@ -75,12 +82,10 @@ router.post("/like",(req, res) => {
                         }
                     }
                     post.save();
-                    res.send(res).status(200);
+                    res.send(post).status(200);
                 }
-
-            } else {
-                res.status(401).send("Unauthorized");
             }
+            
         }).catch ((err) => {
             res.status(401).send(err);
         });
@@ -99,7 +104,8 @@ router.get("/search",(req,res) => {
 });
 
 router.get("/allblogposts",(req,res) => {
-    BlogPost.find({})
+
+    BlogPost.find({}).populate('postedBy', 'username').lean()
         .then((posts) => {
             res.send(posts).status(200);
         }).catch((err) => {

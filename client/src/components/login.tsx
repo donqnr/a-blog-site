@@ -31,12 +31,14 @@ export default function Login() {
     return (
         <div className="align-items-center content">
             <h3>Login</h3>
+            Username:
             <input type="text"
                 className="form-control"
                 id="name"
                 placeholder="Username"
                 onChange={e => setLoginUser(e.target.value)}>
             </input>
+            Password:
             <input type="password"
                 className="form-control"
                 id="password"

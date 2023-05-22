@@ -27,21 +27,10 @@ export default function Read() {
         })
         .then((res) => {
             setPostData(res.data);
-            setLikeAmount(res.data.liked_by.length);
-            if (currentUser?._id === res.data.posterId) {
+            setLikeAmount(res.data.post.liked_by.length);
+            if (currentUser?._id === res.data.post.postedBy) {
                 setSamePoster(true);
             }
-            //Chained axios call to get the posters information
-            return Axios.get(`${REACT_APP_SERVER_URL}/api/auth/userbyid`, {
-                params: {
-                    id: res.data.posterId
-                }
-            }).then((user) => {
-                setPoster(user.data)
-            }).catch((err) => {
-                console.log(err);
-            })
-
         }).catch((err) => {
             console.log(err);
         });
@@ -58,6 +47,7 @@ export default function Read() {
                 url: `${REACT_APP_SERVER_URL}/api/blogpost/like`
             })
             .then((res) => {
+                setLikeAmount(res.data.liked_by.length);
                 console.log(res);
             }).catch((err) => {
                 console.log(err);
@@ -76,22 +66,20 @@ export default function Read() {
         { postData ? (
             <>
             <div>
-                <h1>{postData.title}</h1>
-                <h5>By {poster?.username} | {postData.date_created}</h5>
+                <h1>{postData.post.title}</h1>
+                <h5>By {postData.posterName} | {postData.post.date_created}</h5>
                 <br></br>
-                <p>
-                    <ReactMarkdown>
-                        {postData.text}
-                    </ReactMarkdown>
-                </p>
+                <ReactMarkdown>
+                    {postData.post.text}
+                </ReactMarkdown>
             </div>
             <div>
 
-            <button onClick={likePost}>Like</button> {postData.liked_by.length}
+            <button onClick={likePost}>Like</button> {likeAmount}
             { samePoster ? (
                 <>
                 | 
-                <Link className="editBtn ms-auto" to={`/editpost/${postData._id}`}> 
+                <Link className="editBtn ms-auto" to={`/editpost/${postData.post._id}`}> 
                 Edit Post
                 </Link>
                 </>

@@ -22,23 +22,9 @@ export default function HomeView() {
           return dateB.valueOf() - dateA.valueOf();
         });
         postData = postData.slice(0, 6);
-        // Get the names of the author's of the received posts
-            // This might be a terrible way of implementing this
-            const promises = postData.map((post: any) => {
-              return Axios.get(`${REACT_APP_SERVER_URL}/api/auth/userbyid`, {
-                  params: {
-                      id: post.posterId
-                  }
-              }).then((user) => {
-                  post.poster = user.data.username;
-              }).catch((err) => {
-                  console.log(err);
-              })
-          })
 
-          Promise.all(promises).then((res) => {
-              setPosts(postData);
-          });
+        setPosts(postData);
+
         
     }).catch((err) => {
         console.log(err);
@@ -67,11 +53,11 @@ export default function HomeView() {
           {
             posts?.map((post: any) => {
               return ( 
-                <li key={post}>
+                <li key={post._id}>
                   <Link className="postLink" to={`/read/${post._id}`}>
                     {post.title}
                   </Link>
-                  <p>Posted by {post.poster}</p>
+                  <p>Posted by {post.postedBy?.username}</p>
                   <p>   {post.text.substring(0,200)}</p>
                             </li>
                         )
