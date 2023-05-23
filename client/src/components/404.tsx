@@ -1,3 +1,4 @@
+// 404 not found page
 
 import React, { useState, useContext } from "react";
 import { loginContext } from "./context";
@@ -8,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 export default function HomeView() {
   const loginctx = useContext(loginContext);
   return (
-    <div className="align-items-center">
+    <div className="align-items-center content">
       <p>404 - Not Found</p>
       <Link className="homeLink ms-auto" to="/"> 
         <p>Go to home</p>

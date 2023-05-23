@@ -1,3 +1,6 @@
+// Page for showing all the blog posts
+// Should look into implementing pagination for this, in case database gets too big
+
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
@@ -13,7 +16,7 @@ export default function ViewAll() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [postData, setPostData] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/allblogposts`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/all`, {
         })
         .then((res) => {
         var postData = res.data;

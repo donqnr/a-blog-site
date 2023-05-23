@@ -1,3 +1,5 @@
+// Navigation bar
+
 import React, { useContext, useState } from "react";
 import Axios from "axios";
 import { loginContext } from "./context";

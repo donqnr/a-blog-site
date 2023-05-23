@@ -1,3 +1,5 @@
+// Page for showing search results.
+
 import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";

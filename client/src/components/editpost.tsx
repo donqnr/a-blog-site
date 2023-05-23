@@ -1,3 +1,5 @@
+// Blog post editing page, also handles deletion
+
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
@@ -14,20 +16,19 @@ export default function EditBlogPost() {
     const [postData, setPostData] = useState<any>();
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
+    const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [correctUser, setCorrectUser] = useState(false);
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/blogpost`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost`, {
             params: {
                 id: params.editid
             }
             })
             .then((res) => {
-                if (postData == null) {
-                    setPostData(res.data);
-                    setTitle(res.data.title);
-                    setText(res.data.text);
-                }
+                setPostData(res.data);
+                setTitle(res.data.title);
+                setText(res.data.text);
             }).catch((err) => {
                 setPostData(null);
             });
@@ -37,7 +38,7 @@ export default function EditBlogPost() {
         getPost();
     }, []);
     
-    const send = () => {
+    const editPost = () => {
         if (currentUser) {
             Axios({
                 method: "POST",
@@ -47,7 +48,7 @@ export default function EditBlogPost() {
                     newText: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/editblogpost`
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/edit`
             }).then((res) => {
                 console.log(res);
                 if (res.status === 200) {
@@ -57,7 +58,30 @@ export default function EditBlogPost() {
                 console.log(err);
             });
         }
+        
     };
+
+    const deletePost = () => {
+        if (currentUser) {
+            Axios({
+                method: "DELETE",
+                params: {
+                    id: postData._id,
+                },
+                withCredentials: true,
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/`
+            }).then((res) => {
+                console.log(res);
+                if (res.status === 200) {
+                    window.location.href = "/";
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+        
+    };
+
     return (
         <div className="align-items-center content">
             { postData ? (
@@ -83,7 +107,9 @@ export default function EditBlogPost() {
 
                 </textarea>
 
-                <button onClick={send}>Edit</button>
+                <button className="btn btn-outline-primary editBtn" onClick={editPost}>Edit</button>
+                <button className="btn btn btn-outline-danger deleteBtn" onClick={e => setConfirmDelete(true)}>Delete</button>
+                {confirmDelete ? <button className="btn btn btn-danger deleteBtn" onClick={deletePost}>Confirm Deletion</button> : ``}
                 </>
             ) : (
                 <>

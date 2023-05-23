@@ -1,6 +1,9 @@
+// Profile page, shows user's info, their posts and the posts they've liked.
+
 import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
+import dayjs from "dayjs";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -65,7 +68,7 @@ export default function Profile() {
         <div className="align-items-center content">
             <div>            
             <h2>{userData?.username}</h2>
-            <p>Registered {userData?.date_created}</p>
+            <p>Registered {dayjs(userData?.date_created).format("DD/MM/YYYY")}</p>
             <br/>
             </div>
 
@@ -75,7 +78,7 @@ export default function Profile() {
                 {
                     userPosts?.map((post: any) => {
                         return (
-                            <li>
+                            <li key={post._id}>
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
@@ -94,7 +97,7 @@ export default function Profile() {
                 {
                     likedPosts?.map((post: any) => {
                         return (
-                            <li>
+                            <li key={post._id}>
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>

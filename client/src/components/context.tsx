@@ -1,3 +1,5 @@
+// Context page, handles who's logged in
+
 import Axios from 'axios';
 import React, { createContext, PropsWithChildren, useEffect, useState, FC, ReactNode } from 'react'
 

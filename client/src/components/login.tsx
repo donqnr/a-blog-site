@@ -1,15 +1,19 @@
+// Login page
+
 import React, { useState } from "react";
 import axios from "axios";
  
 import "bootstrap/dist/css/bootstrap.css";
  
 import { Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Login() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [loginUser, setLoginUser] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
+    const loginFail = () => toast('Invalid username or password')
     const send = () => {
         axios({
             method: "POST",
@@ -26,6 +30,7 @@ export default function Login() {
             }
         }).catch((err) => {
             console.log(err);
+            loginFail();
         });
     };
     return (
@@ -56,9 +61,12 @@ export default function Login() {
             <button onClick={send}>Log In</button>
             <div>            
                 <Link className="signUpBtn" to="/signup">
-                    <a href="#">Click here to register a new account.</a>
+                    Click here to register a new account.
                 </Link>
             </div>
+            <div>
+      <Toaster />
+    </div>
         </div>
     );
 };

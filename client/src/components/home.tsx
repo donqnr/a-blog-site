@@ -1,3 +1,5 @@
+// Home page, shows a few of the latest blog posts
+
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
@@ -12,7 +14,7 @@ export default function HomeView() {
   const [posts, setPosts] = useState<any[]>();
 
   const getPosts = () => {
-    Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/allblogposts`, {
+    Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/all`, {
     })
     .then((res) => {
         var postData = res.data;

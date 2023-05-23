@@ -1,3 +1,5 @@
+// Page for reading a single blog post.
+
 import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
@@ -24,7 +26,7 @@ export default function Read() {
     const [formattedDate, setFormattedDate] = useState<String>();
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/blogpost`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost`, {
         params: {
             id: params.id
         }
@@ -78,7 +80,7 @@ export default function Read() {
             <div>
                 <h1>{postData.title}</h1>
                 <h5>
-                    By {postData.postedBy?.username} | 
+                    By <Link className="profileLink" to={`/profile/${postData.postedBy?._id}`}>{postData.postedBy?.username}</Link> | 
                     {` ${dayjs(postData.date_created).format("DD/MM/YYYY HH:mm:ss")}`} 
                     {edited ? ` (Last edited ${dayjs(postData.last_edited).format("DD/MM/YYYY HH:mm:ss")})` : ''}
                 </h5>
@@ -103,8 +105,8 @@ export default function Read() {
             { samePoster ? (
                 <>
                 
-                <Link className="editBtn ms-auto" to={`/editpost/${postData._id}`}> 
-                <button className="btn btn-outline-primary editBtn">Edit Post</button>
+                <Link className="editBtn ms-auto" to={`/edit/${postData._id}`}> 
+                    <button className="btn btn-outline-primary editBtn">Edit Post</button>
                 </Link>
                 </>
             ) : (

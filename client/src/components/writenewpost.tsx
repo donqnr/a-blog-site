@@ -1,3 +1,5 @@
+// Page for writing a new blog post.
+
 import React, { useState, useContext } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
@@ -23,7 +25,7 @@ export default function NewBlogPost() {
                     text: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/newblogpost`
+                url: `${REACT_APP_SERVER_URL}/api/blogpost/new`
             }).then((res) => {
                 console.log(res);
                 if (res.status == 200) {

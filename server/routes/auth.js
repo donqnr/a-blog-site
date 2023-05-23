@@ -6,11 +6,6 @@ const express = require("express"),
 
 require("dotenv").config({ path: "./config.env" });
 
-/* router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  })); */
-
   router.post("/login", (req, res, next) => { 
     passport.authenticate("local", (err, user, info) => {
       if (err) throw err;

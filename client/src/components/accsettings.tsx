@@ -1,3 +1,5 @@
+// Account settings page
+
 import React, { useState, useContext, useEffect  } from "react";
 import Axios from "axios";
 import { loginContext } from "./context"; 

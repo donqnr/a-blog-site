@@ -30,6 +30,7 @@ const App = () => {
         <>
         <Route path="/newpost" element={<NewPost />} />
         <Route path="/account" element={<AccountSettings />} />
+        <Route path="/edit/:editid" element={<EditBlogPost />} />
         </>
       ) : (
         <></>
@@ -39,7 +40,6 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/results/:search_query" element={<SearchResults />} />
         <Route path="/read/:id" element={<Read />} />
-        <Route path="/editpost/:editid" element={<EditBlogPost />} />
         <Route path="/viewall" element={<ViewAll />} />
         <Route path="/profile/:userId" element={<ViewProfile />} />
         <Route path="*" element={<NotFoundPage />} />
