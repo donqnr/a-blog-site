@@ -16,7 +16,7 @@ export default function ViewAll() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [postData, setPostData] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/all`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts`, {
         })
         .then((res) => {
         var postData = res.data;

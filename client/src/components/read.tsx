@@ -26,10 +26,7 @@ export default function Read() {
     const [formattedDate, setFormattedDate] = useState<String>();
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost`, {
-        params: {
-            id: params.id
-        }
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/${params.id}`, {
         })
         .then((res) => {
             setPostData(res.data);
@@ -55,7 +52,7 @@ export default function Read() {
                     postId: params.id
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/like`
+                url: `${REACT_APP_SERVER_URL}/api/blogposts/like`
             })
             .then((res) => {
                 setLikeAmount(res.data.liked_by.length);

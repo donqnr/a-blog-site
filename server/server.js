@@ -57,8 +57,8 @@ app.use(passport.session());
 
 // Register routes
 app.use("/api/auth", auth);
-app.use("/api/blogpost", blogposts);
-app.use("/api/user", users);
+app.use("/api/blogposts", blogposts);
+app.use("/api/users", users);
 
 app.get("/", (req, res) => res.send("e"));
 app.listen(port, () => console.log(

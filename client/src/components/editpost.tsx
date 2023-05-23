@@ -20,10 +20,7 @@ export default function EditBlogPost() {
     const [correctUser, setCorrectUser] = useState(false);
 
     const getPost = () => {     
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost`, {
-            params: {
-                id: params.editid
-            }
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/${params.editid}`, {
             })
             .then((res) => {
                 setPostData(res.data);
@@ -41,14 +38,14 @@ export default function EditBlogPost() {
     const editPost = () => {
         if (currentUser) {
             Axios({
-                method: "POST",
+                method: "PATCH",
                 data: {
                     postId: postData._id,
                     newTitle: title,
                     newText: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/edit`
+                url: `${REACT_APP_SERVER_URL}/api/blogposts/edit`
             }).then((res) => {
                 console.log(res);
                 if (res.status === 200) {
@@ -69,7 +66,7 @@ export default function EditBlogPost() {
                     id: postData._id,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/`
+                url: `${REACT_APP_SERVER_URL}/api/blogposts/:id`
             }).then((res) => {
                 console.log(res);
                 if (res.status === 200) {

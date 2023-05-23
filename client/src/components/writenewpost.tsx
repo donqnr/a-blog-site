@@ -25,7 +25,7 @@ export default function NewBlogPost() {
                     text: text,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/blogpost/new`
+                url: `${REACT_APP_SERVER_URL}/api/blogposts/new`
             }).then((res) => {
                 console.log(res);
                 if (res.status == 200) {

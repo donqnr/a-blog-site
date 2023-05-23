@@ -7,7 +7,8 @@ const express = require("express"),
 
 require("dotenv").config({ path: "./config.env" });
 
-router.put("/namechange", (req, res, next) => {
+// Changing the user's name
+router.put("/name", (req, res, next) => {
     const newName = req.body.newName;
     if (req.user) {
         User.findById(req.user._id)
@@ -23,7 +24,8 @@ router.put("/namechange", (req, res, next) => {
     }(req, res, next);
 });
 
-router.put("/passwordchange", (req, res, next) => {
+// Changing the user's password
+router.put("/password", (req, res, next) => {
     const newPass = req.body.newPass;
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err;

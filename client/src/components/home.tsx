@@ -14,7 +14,7 @@ export default function HomeView() {
   const [posts, setPosts] = useState<any[]>();
 
   const getPosts = () => {
-    Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/all`, {
+    Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts`, {
     })
     .then((res) => {
         var postData = res.data;

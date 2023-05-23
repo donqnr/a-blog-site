@@ -15,10 +15,7 @@ export default function SearchResults() {
     const params = useParams();
     const [posts, setPosts] = useState<any[]>();
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogpost/search`, {
-            params: {
-                search_query: params.search_query
-            }
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/search/${params.search}`, {
         })
         .then((res) => {
             setPosts(res.data);

@@ -28,8 +28,9 @@ export default function AccountSettings() {
                     newName: newName,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/user/namechange`
+                url: `${REACT_APP_SERVER_URL}/api/users/name`
             }).then((res) => {
+                window.location.reload();
                 console.log(res);
             }).catch((err) => {
                 console.log(err);
@@ -47,8 +48,9 @@ export default function AccountSettings() {
                     newPass: newPass,
                 },
                 withCredentials: true,
-                url: `${REACT_APP_SERVER_URL}/api/user/passwordchange`
+                url: `${REACT_APP_SERVER_URL}/api/users/password`
             }).then((res) => {
+                window.location.reload();
                 console.log(res);
             }).catch((err) => {
                 console.log(err);

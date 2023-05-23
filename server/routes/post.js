@@ -8,6 +8,30 @@ const express = require("express"),
     passport = require("passport");
 
 
+// Get all the blog posts
+// This works fine enough when there's not much in the database
+// Consider limits if the database gets large
+router.get("/",(req,res) => {
+    BlogPost.find({}).populate('postedBy', 'username').lean()
+        .then((posts) => {
+            res.send(posts).status(200);
+        }).catch((err) => {
+            console.log(err);
+            res.status(404).send(err);
+        })
+});
+
+// Get a blog post
+router.get("/:postId",(req, res) => {
+    const postId = req.params.postId;
+    BlogPost.findById(postId).populate('postedBy', 'username').lean()
+    .then((post) => {
+        res.send(post).status(200);
+    }).catch((err) => {
+        res.status(404).send("Could not find the blog post");
+    });
+});
+
 // Posting a new blog post
 router.post("/new", (req, res) => {
     if (req.user) {
@@ -25,7 +49,7 @@ router.post("/new", (req, res) => {
 });
 
 // Editing an existing blog post
-router.post("/edit", (req, res) => {
+router.patch("/edit", (req, res) => {
     const postId = req.body.postId;
     const newTitle = req.body.newTitle;
     const newText = req.body.newText;
@@ -47,23 +71,8 @@ router.post("/edit", (req, res) => {
     });
 });
 
-// Get a blog post
-router.get("/",(req, res) => {
-    const postId = req.query.id;
-    BlogPost.findById(postId).populate('postedBy', 'username').lean()
-    .then((post) => {
-        if (!post) {
-            res.send("Blog Post Not Found").status(404);
-        } else {
-            res.send(post).status(200);
-        }
-    }).catch((err) => {
-        res.status(404).send("Could not find the blog post");
-    });
-});
-
 // Deleting a blog post
-router.delete("/",(req, res) => {
+router.delete("/:id",(req, res) => {
     const postId = req.query.id;
     BlogPost.findById(postId)
     .then((post) => {
@@ -114,12 +123,12 @@ router.post("/like",(req, res) => {
 });
 
 // Searching posts
-router.get("/search",(req,res) => {
-    const search_query = req.query.search_query;
+router.get("/search/:query",(req,res) => {
+    const search = req.params.query;
     // Filter for words appearing in either the title or the text of the post
     const filter = { $or: [
-        { title: {$regex: search_query, $options: "i"} },
-        { text: {$regex: search_query, $options: "i"} }
+        { title: {$regex: search, $options: "i"} },
+        { text: {$regex: search, $options: "i"} }
         ] 
     };
     BlogPost.find(filter).populate('postedBy', 'username')
@@ -131,22 +140,10 @@ router.get("/search",(req,res) => {
     })
 });
 
-// Get all the blog posts
-// This works fine enough when there's not much in the database
-// Consider limits if the database gets large
-router.get("/all",(req,res) => {
-    BlogPost.find({}).populate('postedBy', 'username').lean()
-        .then((posts) => {
-            res.send(posts).status(200);
-        }).catch((err) => {
-            console.log(err);
-            res.status(404).send(err);
-        })
-});
 
 // Get all the posts posted by the certain user
-router.get("/postsbyuser",(req,res) => {
-    const userId = req.query.id;
+router.get("/postsbyuser/:userId",(req,res) => {
+    const userId = req.params.userId;
     BlogPost.find({ posterId : userId })
     .then((posts) => {
         res.send(posts).status(200);
@@ -157,8 +154,8 @@ router.get("/postsbyuser",(req,res) => {
 });
 
 // Get all the posts liked by the certain user
-router.get("/postslikedby",(req,res) => {
-    const userId = req.query.id;
+router.get("/postslikedby/:userId",(req,res) => {
+    const userId = req.params.userId;
     BlogPost.find({ liked_by : userId })
     .then((posts) => {
         res.send(posts).status(200);
