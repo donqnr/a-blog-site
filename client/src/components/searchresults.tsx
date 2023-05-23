@@ -27,7 +27,7 @@ export default function SearchResults() {
 
     useEffect (() => {
         getPosts();
-    }, []);
+    }, [posts]);
 
     return (
         <div className="align-items-center content">
@@ -37,11 +37,11 @@ export default function SearchResults() {
                     posts?.map((post: any) => {
                         return ( 
 
-                            <li>
+                            <li key={post._id}>
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
-                                 <p>Posted by 
+                                 <p>Posted by {post.postedBy?.username}
                                  </p>
                             </li>
                         )

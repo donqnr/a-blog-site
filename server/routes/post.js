@@ -89,8 +89,12 @@ router.post("/like",(req, res) => {
 
 router.get("/search",(req,res) => {
     const search_query = req.query.search_query;
-    const filter = { title: {$regex: search_query}, };
-    BlogPost.find(filter)
+    const filter = { $or: [
+        { title: {$regex: search_query, $options: "i"} },
+        { text: {$regex: search_query, $options: "i"} }
+        ] 
+    };
+    BlogPost.find(filter).populate('postedBy', 'username')
     .then((posts) => {
         res.send(posts).status(200);
     }).catch((err) => {
