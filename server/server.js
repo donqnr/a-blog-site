@@ -45,7 +45,7 @@ mongoose
     cookie: {
       maxAge: 1000 * 60 *60 * 24,
       sameSite: 'none',
-      secure: false,
+      secure: true,
     },
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   }));
