@@ -48,20 +48,6 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.get("/userbyid", (req, res) => {
-  id = req.query.id;
-  User.findById(id)
-    .then((user) => {
-      const userinfo = {
-        username: user.username,
-        date_created: user.date_created
-      };
-      res.send(userinfo).status(200);
-    }).catch((err) => {
-      console.log(404);
-    });
-});
-
 router.get("/user", (req, res) => {
   res.send(req.user);
 });

@@ -23,7 +23,6 @@ export default function Read() {
     const [samePoster, setSamePoster] = useState<boolean>(false);
     const [userHasLiked, setUserHasLiked] = useState<boolean>(false);
     const [likeAmount, setLikeAmount] = useState<any>(false);
-    const [formattedDate, setFormattedDate] = useState<String>();
 
     const getPost = () => {     
         Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/${params.id}`, {
@@ -38,7 +37,6 @@ export default function Read() {
             if (res.data.date_created != res.data.last_edited) {
                 setEdited(true);
             }
-            setFormattedDate(dayjs(res.data.date_created).format("DD/MM/YYYY"))
         }).catch((err) => {
             console.log(err);
         });

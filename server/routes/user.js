@@ -43,4 +43,19 @@ router.put("/password", (req, res, next) => {
     })(req, res, next);
 });
 
+// Get an user by their id
+router.get("/:id", (req, res) => {
+    id = req.params.id;
+    User.findById(id)
+      .then((user) => {
+        const userinfo = {
+          username: user.username,
+          date_created: user.date_created
+        };
+        res.send(userinfo).status(200);
+      }).catch((err) => {
+        console.log(404);
+      });
+  });
+
 module.exports = router;

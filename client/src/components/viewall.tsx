@@ -8,7 +8,7 @@ import { BlogPostInterface } from '../interfaces/blogpost'
  
 import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import "../css/mainview.css"
+import "../css/postlist.css";
 
 
 export default function ViewAll() {
@@ -21,6 +21,7 @@ export default function ViewAll() {
         .then((res) => {
         var postData = res.data;
 
+        // Sort the posts by the creation date, descending
         postData.sort(function(a: any, b: any) {
             var dateA = new Date(a.date_created);
             var dateB = new Date(b.date_created);
@@ -47,7 +48,7 @@ export default function ViewAll() {
                         return ( 
 
                             <li key={post._id}>
-                                <Link className="postLink" to={`/read/${post._id}`}>
+                                <Link className="postLink post-title" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
                                  <p>Posted by {post.postedBy?.username}

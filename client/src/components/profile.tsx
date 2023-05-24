@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { Link, useParams } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/profile.css";
 
 export default function Profile() {
     const { REACT_APP_SERVER_URL } = process.env;
@@ -18,10 +19,7 @@ export default function Profile() {
     const [likedPosts, setLikedPosts] = useState<any>();
 
     const getUser = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/auth/userbyid`, {
-            params: {
-                id: params.userId
-            }
+        Axios.get(`${REACT_APP_SERVER_URL}/api/users/${params.userId}`, {
         })
         .then((user) => {
             setUserData(user.data);
@@ -31,7 +29,7 @@ export default function Profile() {
     }
 
     const getUserPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/postsbyuser/${params.userId}`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/byuser/${params.userId}`, {
         })
         .then((res) =>  {
             setUserPosts(res.data);
@@ -42,10 +40,7 @@ export default function Profile() {
     }
 
     const getLikedPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/postslikedby/${params.userId}`, {
-            params: {
-                id: params.userId
-            }
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/likedby/${params.userId}`, {
         })
         .then((res) =>  {
             setLikedPosts(res.data);
@@ -79,6 +74,8 @@ export default function Profile() {
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
+                                <p className="profile-page-post-info">{dayjs(post.date_created).format("DD/MM/YYYY")}
+                                 </p>
                             </li>
                         )
                     })
@@ -98,6 +95,8 @@ export default function Profile() {
                                 <Link className="postLink" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
+                                <p className="profile-page-post-info">Posted by {post.postedBy?.username} | {dayjs(post.date_created).format("DD/MM/YYYY")}
+                                 </p>
                             </li>
                         )
                     })

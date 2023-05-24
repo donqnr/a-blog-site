@@ -42,7 +42,7 @@ export default function Navbar() {
                     </NavLink>
                 </div>
 
-                <div className="navbar">
+                <div className="navbar" >
                 <form className="d-flex" role="search">
                     <input type='text' className="searchBar ms-auto" aria-describedby="search-button-addon" onChange={e => setSearchBar(e.target.value)}/>
                         <Link className="searchLink" to={`/results/${searchBar}`}>

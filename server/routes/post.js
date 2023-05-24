@@ -142,9 +142,9 @@ router.get("/search/:query",(req,res) => {
 
 
 // Get all the posts posted by the certain user
-router.get("/postsbyuser/:userId",(req,res) => {
+router.get("/byuser/:userId",(req,res) => {
     const userId = req.params.userId;
-    BlogPost.find({ posterId : userId })
+    BlogPost.find({ posterId : userId }).populate('postedBy', 'username')
     .then((posts) => {
         res.send(posts).status(200);
     }).catch((err) => {
@@ -154,9 +154,9 @@ router.get("/postsbyuser/:userId",(req,res) => {
 });
 
 // Get all the posts liked by the certain user
-router.get("/postslikedby/:userId",(req,res) => {
+router.get("/likedby/:userId",(req,res) => {
     const userId = req.params.userId;
-    BlogPost.find({ liked_by : userId })
+    BlogPost.find({ liked_by : userId }).populate('postedBy', 'username')
     .then((posts) => {
         res.send(posts).status(200);
     }).catch((err) => {

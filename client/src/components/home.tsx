@@ -4,8 +4,10 @@ import React, { useState, useContext, useEffect, useMemo } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import dayjs from "dayjs";
  
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/postlist.css";
 
 export default function HomeView() {
 
@@ -56,17 +58,17 @@ export default function HomeView() {
             posts?.map((post: any) => {
               return ( 
                 <li key={post._id}>
-                  <Link className="postLink" to={`/read/${post._id}`}>
+                  <Link className="postLink post-title" to={`/read/${post._id}`}>
                     {post.title}
                   </Link>
-                  <p>Posted by {post.postedBy?.username}</p>
-                  <p>   {post.text.substring(0,200)}</p>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+                  <p className="post-info">By {post.postedBy?.username} | {dayjs(post.date_created).format("DD/MM/YYYY")}</p>
+                  <p className="post-preview">   {post.text.substring(0,200)}</p>
+                </li>
+                )
+              })
+            }
+        </ul>
       </div>
     </div>
-    );
+  );
 };

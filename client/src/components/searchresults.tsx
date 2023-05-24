@@ -4,9 +4,12 @@ import React, { useState, useContext, useEffect } from "react";
 import { loginContext } from "./context";
 import Axios from "axios";
 import { BlogPostInterface } from '../interfaces/blogpost'
+import dayjs from "dayjs";
  
 import { useParams, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
+import "../css/postlist.css";
+
 
 
 export default function SearchResults() {
@@ -26,7 +29,7 @@ export default function SearchResults() {
 
     useEffect (() => {
         getPosts();
-    }, [posts]);
+    }, []);
 
     return (
         <div className="align-items-center content">
@@ -37,10 +40,10 @@ export default function SearchResults() {
                         return ( 
 
                             <li key={post._id}>
-                                <Link className="postLink" to={`/read/${post._id}`}>
+                                <Link className="postLink post-title" to={`/read/${post._id}`}>
                                     {post.title}
                                 </Link>
-                                 <p>Posted by {post.postedBy?.username}
+                                 <p className="post-info">Posted by {post.postedBy?.username} | {dayjs(post.date_created).format("DD/MM/YYYY")}
                                  </p>
                             </li>
                         )
