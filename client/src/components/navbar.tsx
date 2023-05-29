@@ -32,14 +32,14 @@ export default function Navbar() {
             <nav className="d-flex navbar navbar-light bg-light">
 
                 <div className="navbar">
-                    <NavLink className="navbar-brand" to="/" style={{ marginLeft: 25, marginRight: 25 }}>
+                    <Link className="navbar-brand" to="/" style={{ marginLeft: 25, marginRight: 25 }}>
                     	A Site
-                    </NavLink>
-                    <NavLink className="allPostsBtn" to="/viewall">
+                    </Link>
+                    <Link className="allPostsBtn" to="/viewall">
                         <button className="btn btn-outline-primary newPostBtn" type="button">
                             View all posts
                         </button>
-                    </NavLink>
+                    </Link>
                 </div>
 
                 <div className="navbar" >

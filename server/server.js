@@ -25,6 +25,7 @@ const app = express();
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
   credentials: true,
+  exposedHeaders: 'Page-Amount',
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

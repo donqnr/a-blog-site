@@ -11,14 +11,60 @@ const express = require("express"),
 // Get all the blog posts
 // This works fine enough when there's not much in the database
 // Consider limits if the database gets large
-router.get("/",(req,res) => {
+/* router.get("/",(req,res) => {
+    const page = req.query.page || 1;
+    const amount = req.query.amount || 10;
+    const limit = amount * page;
+    const skip = limit - amount;
     BlogPost.find({}).populate('postedBy', 'username').lean()
+    .limit(limit)
+    .skip(skip)
+    .sort({date_created: -1})
         .then((posts) => {
             res.send(posts).status(200);
         }).catch((err) => {
             console.log(err);
             res.status(404).send(err);
         })
+}); */
+
+router.get("/",(req,res) => {
+    const page = req.query.page || 1;
+    const perPage = req.query.amount || 10;
+    const limit = perPage * page;
+    const skip = limit - perPage;
+
+
+
+    BlogPost.count({})
+    .then((postAmount) => {
+
+        const pageCount = Math.ceil(postAmount / perPage);
+
+        BlogPost.find({}).populate('postedBy', 'username').lean()
+        .sort({date_created: -1})
+        .skip(skip)
+        .limit(perPage)
+        .then((posts) => {
+            res.set({
+                'Page-Amount': pageCount
+            });
+            res.status(200).send(posts);
+        }).catch((err) => {
+            console.log(err);
+            res.status(404).send(err);
+        })
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(404).send(err);
+    });
+});
+
+    
+
+router.get("/amount",(req,res) => {
+
 });
 
 // Get a blog post

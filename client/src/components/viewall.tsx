@@ -6,29 +6,34 @@ import { loginContext } from "./context";
 import Axios from "axios";
 import { BlogPostInterface } from '../interfaces/blogpost'
  
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/postlist.css";
+import "../css/paginate.css"
+import ReactPaginate from "react-paginate";
 
 
 export default function ViewAll() {
 
     const { REACT_APP_SERVER_URL } = process.env;
+    const queryParams = new URLSearchParams(useLocation().search);
+    const pageNumber = queryParams.get('page');
     const [postData, setPostData] = useState<any[]>();
+    const [pageAmount, setPageAmount] = useState<any>();
+
     const getPosts = () => {
         Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts`, {
+            params: {
+                page: pageNumber
+            }
         })
         .then((res) => {
         var postData = res.data;
 
         // Sort the posts by the creation date, descending
-        postData.sort(function(a: any, b: any) {
-            var dateA = new Date(a.date_created);
-            var dateB = new Date(b.date_created);
-            return dateB.valueOf() - dateA.valueOf();
-            });
 
         setPostData(postData);
+        setPageAmount(res.headers["page-amount"]);
 
         }).catch((err) => {
             console.log(err);
@@ -37,7 +42,7 @@ export default function ViewAll() {
 
     useEffect (() => {
         getPosts();
-    }, []);
+    }, [pageNumber]);
 
     return (
         <div className="align-items-center content">
@@ -58,6 +63,8 @@ export default function ViewAll() {
                     })
                 }
             </ul>
+                <Link className="page1" to={`/viewall?page=1`} onClick={() => queryParams.set('page', '1')}>1</Link>
+                <Link className="page2" to={`/viewall?page=2`} onClick={() => queryParams.set('page', '2')}>2</Link>
         </div>
     );
 };
