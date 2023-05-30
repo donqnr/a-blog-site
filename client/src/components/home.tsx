@@ -8,6 +8,7 @@ import dayjs from "dayjs";
  
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/postlist.css";
+import PostList from "./postlist";
 
 export default function HomeView() {
 
@@ -49,23 +50,10 @@ export default function HomeView() {
     )   
     }
     <h2>Latest Posts</h2>
-      <div>
-        <ul>
-          {
-            posts?.map((post: any) => {
-              return ( 
-                <li key={post._id}>
-                  <Link className="postLink post-title" to={`/read/${post._id}`}>
-                    {post.title}
-                  </Link>
-                  <p className="post-info">By {post.postedBy?.username} | {dayjs(post.date_created).format("DD/MM/YYYY")}</p>
-                  <p className="post-preview">   {post.text.substring(0,200)}</p>
-                </li>
-                )
-              })
-            }
-        </ul>
-      </div>
+    <PostList
+      postData={posts}
+      showPreview={true}>
+    </PostList>
     </div>
   );
 };

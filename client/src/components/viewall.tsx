@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../css/postlist.css";
 import "../css/paginate.css"
 import ReactPaginate from "react-paginate";
+import PostList from "./postlist";
 
 
 export default function ViewAll() {
@@ -18,7 +19,7 @@ export default function ViewAll() {
     const { REACT_APP_SERVER_URL } = process.env;
     const [searchParams, setSearchParams] = useSearchParams({});
     const page = Number(searchParams.get("page")) || 1;
-    const [postData, setPostData] = useState<any[]>();
+    const [posts, setPosts] = useState<any[]>();
     const [pageAmount, setPageAmount] = useState<any>();
 
     const getPosts = () => {
@@ -32,7 +33,7 @@ export default function ViewAll() {
 
         // Sort the posts by the creation date, descending
 
-        setPostData(postData);
+        setPosts(postData);
         setPageAmount(res.headers["page-amount"]);
 
         }).catch((err) => {
@@ -51,22 +52,12 @@ export default function ViewAll() {
     return (
         <div className="align-items-center content">
             <h2>All blog posts</h2>
-            <ul>
-                {
-                    postData?.map((post: any) => {
-                        return ( 
 
-                            <li key={post._id}>
-                                <Link className="postLink post-title" to={`/read/${post._id}`}>
-                                    {post.title}
-                                </Link>
-                                 <p>Posted by {post.postedBy?.username}
-                                 </p>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            <PostList
+            postData={posts}
+            showPreview={false}>
+            </PostList>
+
             <ReactPaginate
             className="react-paginate"
             breakLabel="..."

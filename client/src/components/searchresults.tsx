@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/postlist.css";
+import PostList from "./postlist";
 
 
 
@@ -39,22 +40,10 @@ export default function SearchResults() {
     return (
         <div className="align-items-center content">
             <h2>Search results</h2>
-            <ul>
-                {
-                    posts?.map((post: any) => {
-                        return ( 
-
-                            <li key={post._id}>
-                                <Link className="postLink post-title" to={`/read/${post._id}`}>
-                                    {post.title}
-                                </Link>
-                                 <p className="post-info">Posted by {post.postedBy?.username} | {dayjs(post.date_created).format("DD/MM/YYYY")}
-                                 </p>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            <PostList
+            postData={posts}
+            showPreview={false}>
+            </PostList>
         </div>
     );
 };
