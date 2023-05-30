@@ -6,7 +6,7 @@ import Axios from "axios";
 import { BlogPostInterface } from '../interfaces/blogpost'
 import dayjs from "dayjs";
  
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/postlist.css";
 
@@ -15,10 +15,15 @@ import "../css/postlist.css";
 export default function SearchResults() {
 
     const { REACT_APP_SERVER_URL } = process.env;
-    const params = useParams();
     const [posts, setPosts] = useState<any[]>();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const search = searchParams.get('search');
+
     const getPosts = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/search/${params.search}`, {
+        Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts/search/posts`, {
+            params: {
+                search: search
+            }
         })
         .then((res) => {
             setPosts(res.data);
@@ -29,7 +34,7 @@ export default function SearchResults() {
 
     useEffect (() => {
         getPosts();
-    }, []);
+    }, [search]);
 
     return (
         <div className="align-items-center content">

@@ -17,15 +17,12 @@ export default function HomeView() {
 
   const getPosts = () => {
     Axios.get(`${REACT_APP_SERVER_URL}/api/blogposts`, {
+      params: {
+        amount: 6
+      }
     })
     .then((res) => {
         var postData = res.data;
-        postData.sort(function(a: any, b: any) {
-          var dateA = new Date(a.date_created);
-          var dateB = new Date(b.date_created);
-          return dateB.valueOf() - dateA.valueOf();
-        });
-        postData = postData.slice(0, 6);
 
         setPosts(postData);
 

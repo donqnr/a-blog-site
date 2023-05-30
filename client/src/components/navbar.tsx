@@ -6,7 +6,7 @@ import { loginContext } from "./context";
  
 import "bootstrap/dist/css/bootstrap.css";
  
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useSearchParams, createSearchParams } from "react-router-dom";
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -45,7 +45,7 @@ export default function Navbar() {
                 <div className="navbar" >
                 <form className="d-flex" role="search">
                     <input type='text' className="searchBar ms-auto" aria-describedby="search-button-addon" onChange={e => setSearchBar(e.target.value)}/>
-                        <Link className="searchLink" to={`/results/${searchBar}`}>
+                        <Link className="searchLink" to={`/results?${new URLSearchParams({'search': searchBar})}`}>
                             <button className="btn btn-outline-secondary" type="button" id="search-button-addon">Search</button>
                         </Link>
                 </form>

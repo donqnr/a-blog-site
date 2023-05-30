@@ -34,7 +34,9 @@ router.get("/",(req,res) => {
     const limit = perPage * page;
     const skip = limit - perPage;
 
-
+    if (skip < 0) {
+        skip = 0;
+    }
 
     BlogPost.count({})
     .then((postAmount) => {
@@ -59,12 +61,6 @@ router.get("/",(req,res) => {
         console.log(err);
         res.status(404).send(err);
     });
-});
-
-    
-
-router.get("/amount",(req,res) => {
-
 });
 
 // Get a blog post
@@ -169,8 +165,18 @@ router.post("/like",(req, res) => {
 });
 
 // Searching posts
-router.get("/search/:query",(req,res) => {
-    const search = req.params.query;
+router.get("/search/posts",(req,res) => {
+    const search = req.query.search;
+
+    const page = req.query.page || 1;
+    const perPage = req.query.amount || 10;
+    const limit = perPage * page;
+    const skip = limit - perPage;
+
+    if (skip < 0) {
+        skip = 0;
+    }
+
     // Filter for words appearing in either the title or the text of the post
     const filter = { $or: [
         { title: {$regex: search, $options: "i"} },
