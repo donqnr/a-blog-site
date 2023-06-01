@@ -34,16 +34,24 @@ router.get("/",(req,res) => {
     const limit = perPage * page;
     const skip = limit - perPage;
 
+    const search = req.query.search || "";
+
+    const filter = { $or: [
+        { title: {$regex: search, $options: "i"}},
+        { text: {$regex: search, $options: "i"}}
+        ] 
+    };
+
     if (skip < 0) {
         skip = 0;
     }
 
-    BlogPost.count({})
+    BlogPost.count(filter)
     .then((postAmount) => {
 
         const pageCount = Math.ceil(postAmount / perPage);
 
-        BlogPost.find({}).populate('postedBy', 'username').lean()
+        BlogPost.find(filter).populate('postedBy', 'username').lean()
         .sort({date_created: -1})
         .skip(skip)
         .limit(perPage)
@@ -163,35 +171,6 @@ router.post("/like",(req, res) => {
             res.status(401).send(err);
         });
 });
-
-// Searching posts
-router.get("/search/posts",(req,res) => {
-    const search = req.query.search;
-
-    const page = req.query.page || 1;
-    const perPage = req.query.amount || 10;
-    const limit = perPage * page;
-    const skip = limit - perPage;
-
-    if (skip < 0) {
-        skip = 0;
-    }
-
-    // Filter for words appearing in either the title or the text of the post
-    const filter = { $or: [
-        { title: {$regex: search, $options: "i"} },
-        { text: {$regex: search, $options: "i"} }
-        ] 
-    };
-    BlogPost.find(filter).populate('postedBy', 'username')
-    .then((posts) => {
-        res.send(posts).status(200);
-    }).catch((err) => {
-        console.log(err);
-        res.status(404).send(err);
-    })
-});
-
 
 // Get all the posts posted by the certain user
 router.get("/byuser/:userId",(req,res) => {

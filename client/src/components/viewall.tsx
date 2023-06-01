@@ -29,11 +29,8 @@ export default function ViewAll() {
             }
         })
         .then((res) => {
-        var postData = res.data;
 
-        // Sort the posts by the creation date, descending
-
-        setPosts(postData);
+        setPosts(res.data);
         setPageAmount(res.headers["page-amount"]);
 
         }).catch((err) => {
@@ -67,7 +64,7 @@ export default function ViewAll() {
             pageCount={pageAmount}
             previousLabel="<-"
             renderOnZeroPageCount={null}
-      />
+            />
         </div>
     );
 };
