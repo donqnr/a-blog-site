@@ -3,21 +3,41 @@ const express = require("express"),
       passport = require("passport"),
       User = require('../models/users'),
       jwt = require('jsonwebtoken');
+      bcrypt = require("bcryptjs");
+
+const users = require("../models/users");
+const { createToken } = require("../util/jwttoken");
 
 require("dotenv").config({ path: "./config.env" });
 
   router.post("/login", (req, res, next) => { 
-    passport.authenticate("local", (err, user, info) => {
-      if (err) throw err;
-      if (!user) res.status(400).send("Invalid User or Password");
-      else {
-        req.logIn(user,(err) => {
-          if (err) throw err;
-          res.send("Succesfully Authenticated");
-          console.log(req.user);
-        })
-      }
-    })(req, res, next);
+    
+    try {
+      const { username, password } = req.body;
+      User.findOne({username: username})
+      .then(async (user) => {
+        const auth = await bcrypt.compare(password,user.password);
+
+        if (auth) {
+          const token = createToken(user._id);
+          res.cookie("token", token, {
+            withCredentials: true,
+            httpOnly: false
+          });
+          res.status(201).json({ message: "Login successful", success: true });
+          next();
+        } else {
+          res.status(401).json({message: "Invalid username or password"})
+        }
+
+      }).catch((err) => {
+        res.status(401).json({ message: "Invalid username or password"})
+      });
+
+    } catch (error) {
+      console.error(error);
+      res.status(401).send(error);
+    }
   });
 
 

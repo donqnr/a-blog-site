@@ -27,6 +27,7 @@ app.use(cors({
   credentials: true,
   exposedHeaders: 'Page-Amount',
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,6 +48,7 @@ mongoose
       maxAge: 1000 * 60 *60 * 24,
       sameSite: 'none',
       secure: true,
+      domain: process.env.CORS_ORIGIN
     },
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   }));
