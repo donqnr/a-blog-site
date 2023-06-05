@@ -25,7 +25,7 @@ Create a new file on /server named config.env and add the required variables to 
 >
 > CORS_ORIGIN=http://localhost:3000 (IP to your frontend, to allow it to receive data from the backend)
 > 
-> SECRET=Oatmeal_Cookies
+> SECRET=secret_key
 
 Also in the root of the client folder, create a new file named .env and add this variable:
 
