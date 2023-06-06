@@ -17,14 +17,8 @@ export default function Navbar() {
     const [searchBar, setSearchBar] = useState("")
 
     const logout = () => {
-        Axios.get(`${REACT_APP_SERVER_URL}/api/auth/logout`, {
-            withCredentials: true
-        }).then((res) => {
-            console.log(res);
-            handleLogout();
-        }).catch((err) => {
-            console.log(err);
-        });
+        handleLogout();
+
     }
 
     return (

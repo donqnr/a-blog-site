@@ -8,6 +8,8 @@ const express = require("express"),
 const users = require("../models/users");
 const { createToken } = require("../util/jwttoken");
 
+const { userVerification } = require("../middlewares/authMiddleware");
+
 require("dotenv").config({ path: "./config.env" });
 
   router.post("/login", (req, res, next) => { 
@@ -71,4 +73,7 @@ router.get("/logout", (req, res) => {
 router.get("/user", (req, res) => {
   res.send(req.user);
 });
+
+router.post("/", userVerification);
+
 module.exports = router;
