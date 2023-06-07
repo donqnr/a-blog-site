@@ -6,7 +6,9 @@ const User = require('../models/users'),
 const express = require("express"),
     router = express.Router(),
     passport = require("passport");
+    jwt = require("jsonwebtoken");
 
+const { userVerification } = require("../middlewares/authMiddleware");
 
 // Get all the blog posts
 // This works fine enough when there's not much in the database
@@ -84,18 +86,24 @@ router.get("/:postId",(req, res) => {
 
 // Posting a new blog post
 router.post("/new", (req, res) => {
-    if (req.user) {
-        var blogpost = new BlogPost({
-            posterId: req.user._id,
-            postedBy: req.user._id,
-            title: req.body.title,
-            text: req.body.text,
-        })
-        blogpost.save();
-        res.status(200).send(blogpost);
-    } else {
-        res.status(401).send("User required");
-    }
+    console.log(req.cookies.token);
+
+    // Refactor token verification to a middleware
+    jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => {
+        if (err) {
+            console.log('nope');
+            res.sendStatus(403);
+        } else {
+            console.log(data.id);
+            var blogpost = new BlogPost({
+                postedBy: data.id,
+                title: req.body.title,
+                text: req.body.text,
+            })
+            blogpost.save();
+            res.status(200).send(blogpost);
+        }
+    });
 });
 
 // Editing an existing blog post
@@ -103,19 +111,30 @@ router.patch("/edit", (req, res) => {
     const postId = req.body.postId;
     const newTitle = req.body.newTitle;
     const newText = req.body.newText;
+    console.log(req.cookies.token);
     BlogPost.findById(postId)
     .then((post) => {
-        // Check if the user is the same as the one who made the post
-        // Not sure how secure this method is
-        if (req.user && req.user._id == post.posterId) { 
-            post.title = newTitle;          
-            post.text = newText;
-            post.last_edited = Date.now();
-            post.save();
-            res.status(200).send(post);
-        } else {
-            res.status(401).send("Unauthorized");
-        }
+
+        // Refactor token verification to a middleware
+        jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => {
+            if (err) {
+                console.log('nope');
+                res.sendStatus(403);
+            } else {
+                // Check if the user is the same as the one who made the post
+                // Not sure how secure this method is
+                if (data.id == post.postedBy || data.id == post.posterId) {
+                    post.title = newTitle;          
+                    post.text = newText;
+                    post.last_edited = Date.now();
+                    post.save();
+                    res.status(200).send(post);
+                } else {
+                    res.sendStatus(403);
+                }
+
+            }
+        });
     }).catch((err) => {
         res.status(404).send(err);
     });
@@ -126,18 +145,26 @@ router.delete("/:id",(req, res) => {
     const postId = req.query.id;
     BlogPost.findById(postId)
     .then((post) => {
-        // Check if the user is the same as the one who made the post
-        // Not sure how secure this method is
-        if (req.user && req.user._id == post.posterId) { 
-            BlogPost.findByIdAndDelete(postId).then((res) => {
-                console.log(res);
-            }).catch((err) => {
-                console.log(err);
-            });
-            res.status(200).send("Delorted");
-        } else {
-            res.status(401).send("Unauthorized");
-        }
+        // Refactor token verification to a middleware
+        jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => { 
+            if (err) {
+                console.log('nope');
+                res.sendStatus(403);
+            } else {
+                // Check if the user is the same as the one who made the post
+                // Not sure how secure this method is
+                if (data.id == post.postedBy || data.id == post.posterId) { 
+                    BlogPost.findByIdAndDelete(postId).then((res) => {
+                        console.log(res);
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                    res.status(200).send("Delorted");
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
     }).catch((err) => {
         res.status(401).send(err);
     }).finally(() => {

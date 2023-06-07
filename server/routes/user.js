@@ -3,35 +3,37 @@ const express = require("express"),
     BlogPost = require('../models/blogpost');
     router = express.Router(),
     passport = require("passport"),
-    jwt = require('jsonwebtoken');
+    jwt = require("jsonwebtoken");
 
 require("dotenv").config({ path: "./config.env" });
 
 // Changing the user's name
 router.put("/name", (req, res, next) => {
     const newName = req.body.newName;
-    if (req.user) {
-        User.findById(req.user._id)
-        .then((user) => {
-            user.username = newName;
-            user.save();
-            res.status(200).send("Name changed succesfully");
-        }).catch((err) => {
-            res.status(401).send(err);
-        });
-    } else {
-        res.status(401).send(err);
-    }(req, res, next);
+    jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => { 
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            User.findById(data.id)
+            .then((user) => { 
+                user.username = newName;
+                user.save();
+                res.status(200).send("Name changed succesfully");
+            }).catch((err) => {
+                res.status(401).send(err);
+            });
+        }
+    })
 });
 
 // Changing the user's password
 router.put("/password", (req, res, next) => {
     const newPass = req.body.newPass;
-    passport.authenticate("local", (err, user, info) => {
-        if (err) throw err;
-        if (!user) res.status(400).send("no");
-        else {
-            User.findById(req.user._id)
+    jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => { 
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            User.findById(data.id)
             .then((user) => {
                 user.password = newPass;
                 user.save();
@@ -40,7 +42,7 @@ router.put("/password", (req, res, next) => {
                 res.status(401).send(err);
             });
         }
-    })(req, res, next);
+    })
 });
 
 // Get an user by their id

@@ -5,11 +5,11 @@ var blogPostSchema = new mongoose.Schema(
     {
         posterId: {
             type: String,
-            required: true
         },
         postedBy: {
             type:mongoose.Schema.Types.ObjectId,
-            ref: "users"
+            ref: "users",
+            required: true
         },
         title: {
             type: String,
