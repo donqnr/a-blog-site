@@ -24,9 +24,11 @@ const port = process.env.PORT || 5000;
 const app = express();
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true,
-  exposedHeaders: 'Page-Amount',
+  exposedHeaders: ['Page-Amount','Cookie']
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,23 +40,8 @@ mongoose
   .then(console.log(`Connected to MongoDB`))
   .catch(err => console.log(err));
 
-// Session settings
-  app.use(session({
-    secret: process.env.SECRET,
-    resave: true,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 *60 * 24,
-      sameSite: 'none',
-      secure: true,
-    },
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  }));
+app.use(cookieParser());
 
-app.use(cookieParser(process.env.SECRET));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Register routes
 app.use("/api/auth", auth);

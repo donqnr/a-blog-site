@@ -3,21 +3,45 @@ const express = require("express"),
       passport = require("passport"),
       User = require('../models/users'),
       jwt = require('jsonwebtoken');
+      bcrypt = require("bcryptjs");
+
+const users = require("../models/users");
+const { createToken } = require("../util/jwttoken");
+
+const { userVerification } = require("../middlewares/authMiddleware");
 
 require("dotenv").config({ path: "./config.env" });
 
   router.post("/login", (req, res, next) => { 
-    passport.authenticate("local", (err, user, info) => {
-      if (err) throw err;
-      if (!user) res.status(400).send("Invalid User or Password");
-      else {
-        req.logIn(user,(err) => {
-          if (err) throw err;
-          res.send("Succesfully Authenticated");
-          console.log(req.user);
-        })
-      }
-    })(req, res, next);
+    
+    try {
+      const { username, password } = req.body;
+      User.findOne({username: username})
+      .then(async (user) => {
+        const auth = await bcrypt.compare(password,user.password);
+
+        if (auth) {
+          const token = createToken(user._id);
+          res.cookie("token", token, {
+            withCredentials: true,
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
+          });
+          res.status(201).json({ message: "Login successful", success: true });
+          next();
+        } else {
+          res.status(401).json({message: "Invalid username or password"})
+        }
+
+      }).catch((err) => {
+        res.status(401).json({ message: "Invalid username or password"})
+      });
+
+    } catch (error) {
+      console.error(error);
+      res.status(401).send(error);
+    }
   });
 
 
@@ -41,14 +65,15 @@ router.post('/signup', (req, res) => {
   }
 });
 
-router.get("/logout", (req, res) => {
-  req.logout(req.user, err => {
-    if(err) return next(err);
-    res.send("success");
-  });
+router.get("/logout", async (req, res) => {
+    res.clearCookie("token");
+    res.redirect("/")
 });
 
 router.get("/user", (req, res) => {
   res.send(req.user);
 });
+
+router.post("/", userVerification);
+
 module.exports = router;

@@ -25,7 +25,7 @@ export default function Login() {
             withCredentials: true,
             url: `${REACT_APP_SERVER_URL}/api/auth/login`,
         }).then((res) => {
-            if (res.status == 200) {
+            if (res.status == 201) {
                 window.location.href = "/";
             }
         }).catch((err) => {
@@ -53,7 +53,7 @@ export default function Login() {
             {/* Remember Me 
             <input type="checkbox"
             className="remember"
-            value="Remember Me"     // Remember me button disabled for now due to bullshit
+            value="Remember Me"     // Remember me button disabled for now
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}>
             </input> */}
