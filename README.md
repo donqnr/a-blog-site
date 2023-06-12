@@ -25,7 +25,8 @@ Create a new file on /server named config.env and add the required variables to 
 >
 > CORS_ORIGIN=http://localhost:3000 (IP to your frontend, to allow it to receive data from the backend)
 > 
-> SECRET=secret_key
+> JWT_TOKEN_KEY=secret (Secret key for JWTs, change to something more secure)
+> 
 
 Also in the root of the client folder, create a new file named .env and add this variable:
 
