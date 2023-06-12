@@ -94,7 +94,6 @@ router.post("/new", (req, res) => {
             console.log('nope');
             res.sendStatus(403);
         } else {
-            console.log(data.id);
             var blogpost = new BlogPost({
                 postedBy: data.id,
                 title: req.body.title,
@@ -111,10 +110,8 @@ router.patch("/edit", (req, res) => {
     const postId = req.body.postId;
     const newTitle = req.body.newTitle;
     const newText = req.body.newText;
-    console.log(req.cookies.token);
     BlogPost.findById(postId)
     .then((post) => {
-
         // Refactor token verification to a middleware
         jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => {
             if (err) {
@@ -177,23 +174,26 @@ router.post("/like",(req, res) => {
     const postId = req.body.postId;
     BlogPost.findById(postId)
         .then((post) => {
-            if (req.user) {
-                // If the user hasn't liked the post yet, add a like
-                if (!post.liked_by.includes(req.user._id)) {
-                    post.liked_by.push(req.user._id);
-                    post.save();
-                    res.send(post).status(200);
-                } else  { // If the user had already liked the post, instead the like gets removed
-                    for ( let i = 0; i < post.liked_by.length; i++ ) {
-                        if (post.liked_by[i] === req.user._id.toString()) {
-                            post.liked_by.splice(i,1);
+            jwt.verify(req.cookies.token, process.env.JWT_TOKEN_KEY, async (err, data) => { 
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    // If the user hasn't liked the post yet, add a like
+                    if (!post.liked_by.includes(data.id)) {
+                        post.liked_by.push(data.id);
+                        post.save();
+                        res.send(post).status(200);
+                    } else  { // If the user had already liked the post, instead the like gets removed
+                        for ( let i = 0; i < post.liked_by.length; i++ ) {
+                            if (post.liked_by[i] === data.id.toString()) {
+                                post.liked_by.splice(i,1);
+                            }
                         }
+                        post.save();
+                        res.send(post).status(200);
                     }
-                    post.save();
-                    res.send(post).status(200);
                 }
-            }
-            
+            })
         }).catch ((err) => {
             res.status(401).send(err);
         });

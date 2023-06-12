@@ -46,8 +46,16 @@ export default function Context(props : PropsWithChildren<any>) {
     }
 
     const handleLogout = () => {
-        setCurrentUser(undefined);
-        removeCookie('token');
+        Axios.get(`${REACT_APP_SERVER_URL}/api/auth/logout`,
+        { withCredentials: true },
+        ).then(res => {
+            setCurrentUser(undefined);
+            removeCookie('token');
+            window.location.href = "/";
+        }).catch((err) => {
+            console.log(err);
+        });
+
     }
 
     const stateValues = {

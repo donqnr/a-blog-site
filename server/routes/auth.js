@@ -24,7 +24,9 @@ require("dotenv").config({ path: "./config.env" });
           const token = createToken(user._id);
           res.cookie("token", token, {
             withCredentials: true,
-            httpOnly: false
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
           });
           res.status(201).json({ message: "Login successful", success: true });
           next();
@@ -63,11 +65,9 @@ router.post('/signup', (req, res) => {
   }
 });
 
-router.get("/logout", (req, res) => {
-  req.logout(req.user, err => {
-    if(err) return next(err);
-    res.send("success");
-  });
+router.get("/logout", async (req, res) => {
+    res.clearCookie("token");
+    res.redirect("/")
 });
 
 router.get("/user", (req, res) => {
