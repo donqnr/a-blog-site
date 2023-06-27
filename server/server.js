@@ -49,6 +49,8 @@ app.use("/api/blogposts", blogposts);
 app.use("/api/users", users);
 
 app.get("/", (req, res) => res.send("e"));
-app.listen(port, () => console.log(
+const server = app.listen(port, () => console.log(
   `Listening on port ${port}!`
 ));
+
+module.exports = server;
